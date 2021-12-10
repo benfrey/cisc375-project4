@@ -1,0 +1,29 @@
+{
+    "name": "cisc375-project3",
+    "version": "1.0.0",
+    "description": "RESTful based crime server",
+    "author": {
+        "name": "Ben Frey",
+        "email": "frey6131@stthomas.edu"
+    },
+    "contributors": [
+        {
+            "name": "Grant Toenges",
+            "email": "grant.toenges@stthomas.edu"
+        },
+        {
+            "name": "Logan Shafer",
+            "email": "logan.shafer@stthomas.edu"
+        }
+    ],
+    "main": "server.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/benfrey/cisc375-project3"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "sqlite3": "^5.0.2"
+    }
+}
