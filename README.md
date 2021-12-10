@@ -1,52 +1,59 @@
-# RESTful Server - CISC375: Web Development Project #3
+# Dynamic Web Application - CISC375: Web Development Project #4
 
-1. $git clone https://github.com/<user>/<project>
-2. $cd <project>
+1. git clone https://github.com/<user>/<project>
+2. cd <project>
 3. Copy my local version of 'stpaul_crime.sqlite3' to the 'db' folder
-4. $npm install
-5. $node server.js
-6. Perform GET, PUT, DELETE requests using curl
+4. npm install
+5. node server.js
+6. Visit your homepage in a browser (http://localhost:8000)
 
 # Project components
-Implement the following to earn 30/40 points (grade: C)
-- Package.json **(Ben)**
-    - Fill out the author and contributors sections in package.json (author should be whoever's GitHub account is used to host the code, contributors should be all group members)
-    - Fill out the URL of the repository
-    - Ensure all used modules downloaded via NPM are in the dependencies object
-    - Add the following routes for your API
-- GET /codes **(Ben)**
-    - Return JSON array with list of codes and their corresponding incident type (ordered by code number)
-- GET /neighborhoods **(Ben)**
-    - Return JSON object with list of neighborhood ids and their corresponding neighborhood name (ordered by id)
-- GET /incidents **(Ben)**
-    - Return JSON object with list of crime incidents (ordered by date/time). Note date and time should be separate fields.
-- PUT /new-incident **(Grant)**
-    - Upload incident data to be inserted into the SQLite3 database
-    - Data fields: case_number, date, time, code, incident, police_grid, neighborhood_number, block
-    - Note: response should reject (status 500) if the case number already exists in the database
-- DELETE /remove-incident **(Logan)**
-    - Remove data from the SQLite3 database
-    - Data fields: case_number
-    - Note: reponse should reject (status 500) if the case number does not exist in the database
+Implement the following to earn 45/60 points (grade: C)
 
-Implement additional features to earn a B or A
-- Add the following query option for GET /codes (2 pts) **(Ben)**
-    - code - comma separated list of codes to include in result (e.g. ?code=110,700). By default all codes should be included.
-- Add the following query options for GET /neighborhoods (2 pts) **(Ben)**
-    - id - comma separated list of neighborhood numbers to include in result (e.g. ?id=11,14). By default all neighborhoods should be included.
-- Add the following query options for GET /incidents (6 pts) **(Logan + whoever)**
-    - start_date - first date to include in results (e.g. ?start_date=2019-09-01)
-    - end_date - last date to include in results (e.g. ?end_date=2019-10-31)
-    - code - comma separated list of codes to include in result (e.g. ?code=110,700). By default all codes should be included.
-    - grid - comma separated list of police grid numbers to include in result (e.g. ?grid=38,65). By default all police grids should be included.
-    - neighborhood - comma separated list of neighborhood numbers to include in result (e.g. ?neighborhood=11,14). By default all neighborhoods should be included.
-    - limit - maximum number of incidents to include in result (e.g. ?limit=50). By default the limit should be 1,000. Result should include the N most recent incidents (within specified date range).
+- Show a map using the Leaflet API
+  - Pan and zoom available with mouse click-and-drag and scroll wheel interaction
+    - Limit pan and zoom so map does not display regions outside of St. Paul
+    - HINT: zoom levels 11-18 are good
+    - NOTE: this is already the default setup in the starter code!
+  - Have an input box and 'Go' button for a user to type a location (lat/long coordinates, address, etc.)
+    - Map should update when location is entered and 'Go' button pressed
+    - Input box text should update with new location (lat/long coordinates or address) when map is panned/zoomed
+      - NOTE: updating once pan/zoom has ended is recommended - constantly updating this during a pan will overwhelm the system
+    - Use the Nominatim API (https://nominatim.org/release-docs/develop/api/Overview/ (Links to an external site.) (Links to an external site.)) to convert between address and lat/long
+    - Clamp input values if lat/long is outside of St. Paul's bounding box
+- Retrieve data from your St. Paul Crime API
+  - By default, include 1,000 most recent crimes in the database
+  - Populate a table with one row per crime (use neighborhood_name rather than neighborhood_number, and incident_type rather than code)
+    - Table should be ordered with most recent on top 
+    - Only show crimes that occurred in neighborhoods visible on the map
+HINT: get lat/long coordinates for the NW and SE corners of the map to use as the min/max lat/long coordinates
+  - Draw markers on the map for each neighborhood
+    - Marker should have popup to show the number of crimes committed in that neighborhood
+- "About the Project" page
+  - Short bio about each team member (including a photo)
+  - Description of the tools (frameworks, APIs, etc.) you used to create the application
+  - Video demo of the application (2 - 4 minutes) - include voiceover
+    - Can natively embed or upload to YouTube and embed
+  - Six interesting findings that you discovered using your application
 
-    
-    
-=================================testing curl commands (grant)=======================
-    curl -X GET "http://localhost:8000/incidents?end_date=2019-02-01&start_date=2019-01-01"
-    curl -X GET "http://localhost:8000/incidents?limit=4&end_date=2019-02-01&start_date=2019-01-01"
-    curl -X GET "http://localhost:8000/incidents?limit=4&end_date=2019-02-01&start_date=2019-01-01&code=9954"
-    curl -X GET "http://localhost:8000/incidents?limit=4&end_date=2019-02-01&start_date=2019-01-01&code=9954&neighborhood=10"
+Implement additional features to earn a B or A (5 pts each)
+
+- Create UI controls to filter crime data
+  - Filter based on the following
+    - incident_type: list of checkboxes per incident_type
+      - OK (in fact recommended) to aggregate similar incident types (e.g. codes 1800 - 1885 are all sub-categories of 'Narcotics')
+    - neighborhood_name: list of checkboxes per neighborhood_name
+    - date range: select a start and end date (only show crimes between those dates)
+    - time range: select a start and end time (only show crimes that occurred between those times of day)
+    - max incidents: select maximum number of incidents to retrieve / show
+  - Changing a filter should trigger a new request to the St. Paul Crime API
+    - It's OK to have a separate 'Update' button, so users can change many filters before triggering a new request
+- Style the background color of rows in the table to categorize crimes as "violent crimes" (crimes against another person), "property crimes" (crimes against a person's or business' property), or "other crimes" (anything else)
+  - You can categorize as you see fit - here's a link with more info to help though: https://www.justia.com/criminal/offenses/ (Links to an external site.)
+  - Also include a legend for the colors
+- Add a marker to the map at exact crime location when selected from the table
+  - Make marker a different color / icon than the markers for the total crimes per neighborhood
+  - Create a popup with date, time, incident, and delete button
+  - Note addresses are slightly obscured (e.g. '98X UNIVERSITY AV W' or 'THOMAS AV & VICTORIA')
+    - For addresses with an 'X' in the address number, you can replace it with a '0' (e.g. '90X UNIVERSITY AV W' would become '980 UNIVERSITY AV W'). Careful not to replace all X's though - there could be an X in the street name!
     
