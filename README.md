@@ -28,7 +28,7 @@ Implement the following to earn 45/60 points (grade: C)
     - Only show crimes that occurred in neighborhoods visible on the map **(Logan)**
 HINT: get lat/long coordinates for the NW and SE corners of the map to use as the min/max lat/long coordinates
   - Draw markers on the map for each neighborhood **(Grant)** DONE
-    - Marker should have popup to show the number of crimes committed in that neighborhood **(Grant)**
+    - Marker should have popup to show the number of crimes committed in that neighborhood **(Grant)** DONE
 - "About the Project" page **(Ben)**
   - Short bio about each team member (including a photo)
   - Description of the tools (frameworks, APIs, etc.) you used to create the application
