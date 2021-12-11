@@ -2,23 +2,23 @@ let app;
 let map;
 let neighborhood_markers = 
 [
-    {location: [44.942068, -93.020521], marker: null},
-    {location: [44.977413, -93.025156], marker: null},
-    {location: [44.931244, -93.079578], marker: null},
-    {location: [44.956192, -93.060189], marker: null},
-    {location: [44.978883, -93.068163], marker: null},
-    {location: [44.975766, -93.113887], marker: null},
-    {location: [44.959639, -93.121271], marker: null},
-    {location: [44.947700, -93.128505], marker: null},
-    {location: [44.930276, -93.119911], marker: null},
-    {location: [44.982752, -93.147910], marker: null},
-    {location: [44.963631, -93.167548], marker: null},
-    {location: [44.973971, -93.197965], marker: null},
-    {location: [44.949043, -93.178261], marker: null},
-    {location: [44.934848, -93.176736], marker: null},
-    {location: [44.913106, -93.170779], marker: null},
-    {location: [44.937705, -93.136997], marker: null},
-    {location: [44.949203, -93.093739], marker: null}
+    {location: [44.942068, -93.020521], marker: "Conway-Battlecreek-Highwood", number: 1},
+    {location: [44.977413, -93.025156], marker: "Greater East Side", number: 2},
+    {location: [44.931244, -93.079578], marker: "West Side", number: 3},
+    {location: [44.956192, -93.060189], marker: "Dayton's Bluff", number: 4},
+    {location: [44.978883, -93.068163], marker: "Payne-Phalen", number: 5},
+    {location: [44.975766, -93.113887], marker: "North End", number: 6},
+    {location: [44.959639, -93.121271], marker: "Frogtown", number: 7},
+    {location: [44.947700, -93.128505], marker: "Summit-University", number: 8},
+    {location: [44.930276, -93.119911], marker: "West Seventh", number: 9},
+    {location: [44.982752, -93.147910], marker: "Como", number: 10},
+    {location: [44.963631, -93.167548], marker: "Hamline-Midway", number: 11},
+    {location: [44.973971, -93.197965], marker: "Saint Anthony", number: 12},
+    {location: [44.949043, -93.178261], marker: "Union Park", number: 13},
+    {location: [44.934848, -93.176736], marker: "Macalester-Groveland", number: 14},
+    {location: [44.913106, -93.170779], marker: "Highland", number: 15},
+    {location: [44.937705, -93.136997], marker: "Summit Hill", number: 16},
+    {location: [44.949203, -93.093739], marker: "Downtown", number: 17}
 ];
 
 function init() {
@@ -49,7 +49,19 @@ function init() {
         maxZoom: 18
     }).addTo(map);
     map.setMaxBounds([[44.883658, -93.217977], [45.008206, -92.993787]]);
+
+    //Set the neighborhood markers on the map
+    for (var i = 0; i < neighborhood_markers.length; i++) {
+        getJSON('http://localhost:8000/incidents?neighborhood='+neighborhood_markers[i].number).then(result =>{
+            var numCrimes = result.length;
+            marker = new L.marker(neighborhood_markers[result[0].neighborhood_number].location)
+            .bindPopup(neighborhood_markers[result[0].neighborhood_number].marker+'\n'+ 'has had '+ numCrimes+' crimes')
+            .addTo(map);
+        });
+      }
+
     
+
     let district_boundary = new L.geoJson();
     district_boundary.addTo(map);
 
@@ -62,6 +74,8 @@ function init() {
         console.log('Error:', error);
     });
 }
+
+
 
 function getJSON(url) {
     return new Promise((resolve, reject) => {
