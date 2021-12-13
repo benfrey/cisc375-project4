@@ -50,15 +50,19 @@ function init() {
     }).addTo(map);
     map.setMaxBounds([[44.883658, -93.217977], [45.008206, -92.993787]]);
 
-    //Set the neighborhood markers on the map
-    for (var i = 0; i < neighborhood_markers.length; i++) {
-        getJSON('http://localhost:8000/incidents?neighborhood='+neighborhood_markers[i].number).then(result =>{
-            var numCrimes = result.length;
-            marker = new L.marker(neighborhood_markers[result[0].neighborhood_number].location)
-            .bindPopup(neighborhood_markers[result[0].neighborhood_number].marker+'\n'+ 'has had '+ numCrimes+' crimes')
-            .addTo(map);
-        });
-      }
+      getJSON('http://localhost:8000/incidents?neighborhood=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17').then(result =>{
+          for(var i=1; i<18; i++){
+            var crimeArray = [];
+              for(var j=0; j<result.length; j++){
+                  if(result[j].neighborhood_number === i){
+                      crimeArray.push(result[i])
+                  }
+              }
+              marker = new L.marker(neighborhood_markers[i].location)
+              .bindPopup(neighborhood_markers[i].marker+" neighborhood has had "+crimeArray.length+" crimes")
+              .addTo(map);
+          }
+      });
 
     
 
@@ -73,7 +77,29 @@ function init() {
     }).catch((error) => {
         console.log('Error:', error);
     });
+
+    // new Vue({
+    //     el: '#search',
+    //     data(){
+    //         return {
+    //             lat: map.getBounds().getCenter().lat,
+    //             long: map.getBounds().getCenter().lng
+    //         }
+    //     }
+    // })
+
+    new Vue({
+        el: '#search',
+        data() {
+          return {
+            lat: map.getBounds().getCenter().lat,
+            long: map.getBounds().getCenter().lng
+          }
+        }
+      });
 }
+
+
 
 
 
