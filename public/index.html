@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>St. Paul Crime Map</title>
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crime Map Services</title>
+    <link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
 
     <!-- jQuery -->
     <script type="application/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -20,6 +21,19 @@
     <script type="application/javascript" src="scripts/app.js"></script>
 </head>
 <body onload="init()">
+    <!-- Selections -->
+    <div class="row">
+        <h3><b>Crime Map Services</b> (CMS) inc.</h1>
+        <input type="search" id="mapSearch" name="mapSearch" aria-label="Search through St. Paul crimes">
+        <button>Go</button>
+        <input type="checkbox" id="rangeOne" name="rangeOne" value="100-200"> <!-- Range from x1 to x2 -->
+        <input type="checkbox" id="rangeTwo" name="rangeTwo" value="201-300"> <!-- Range from x1 to x2 -->
+        <input type="checkbox" id="rangeThree" name="rangeThree" value="301-400"> <!-- Range from x1 to x2 -->
+        <input type="checkbox" id="rangeFour" name="rangeFour" value="401-500"> <!-- Range from x1 to x2 -->
+        <input type="checkbox" id="rangeFive" name="rangeFive" value="501-600"> <!-- Range from x1 to x2 -->
+        <input type="checkbox" id="rangeSix" name="rangeSix" value="601-700"> <!-- Range from x1 to x2 -->
+    </div>
+
     <!-- Main app -->
     <div id="app">
         <div id="leafletmap"></div>
