@@ -16,10 +16,10 @@ Implement the following to earn 45/60 points (grade: C)
     - HINT: zoom levels 11-18 are good
     - NOTE: this is already the default setup in the starter code!
   - Have an input box and 'Go' button for a user to type a location (lat/long coordinates, address, etc.) **(Ben will do UI)**
-    - Map should update when location is entered and 'Go' button pressed
-    - Input box text should update with new location (lat/long coordinates or address) when map is panned/zoomed
+    - Map should update when location is entered and 'Go' button pressed (Grant)
+    - Input box text should update with new location (lat/long coordinates or address) when map is panned/zoomed (grant)
       - NOTE: updating once pan/zoom has ended is recommended - constantly updating this during a pan will overwhelm the system
-    - Use the Nominatim API (https://nominatim.org/release-docs/develop/api/Overview/ (Links to an external site.) (Links to an external site.)) to convert between address and lat/long
+    - Use the Nominatim API (https://nominatim.org/release-docs/develop/api/Overview/ (Links to an external site.) (Links to an external site.)) to convert between address and lat/long(Grant)
     - Clamp input values if lat/long is outside of St. Paul's bounding box **(Grant)**
 - Retrieve data from your St. Paul Crime API **(Logan)**
   - By default, include 1,000 most recent crimes in the database
