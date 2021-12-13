@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Crime Map Services</title>
+    <title>CMS - Map</title>
     <link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
 
     <!-- jQuery -->
@@ -20,43 +20,65 @@
     <link rel="stylesheet" href="css/style.css"/>
     <script type="application/javascript" src="scripts/app.js"></script>
 </head>
+
 <body onload="init()">
+
+  <!-- Navigation -->
+  <div class="top-bar" id="realEstateMenu">
+    <div class="top-bar-left">
+      <ul class="menu" data-responsive-menu="accordion">
+        <li class="menu-text">Crime Map Services</li>
+        <li><a href="">Map</a></li>
+        <li><a href="./about.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+
     <!-- Selections -->
     <div class="row">
 
       <!-- Contains lat, long, and general search options -->
-      <h3>Location Search<h3>
-      <div id="search" class="control">
-          Latitude<input type="text" v-model="lat"/>
-          Longitude<input type="text" v-model="long"/>
-          Address<input type="text" v-model="add"/>
+      <div class="control">
+          <h3>Location Search<h3>
+          <input type="text" placeholder="Latitude" v-model="lat"/>
+          <input type="text" placeholder="Longitude" v-model="long"/>
+          <input id="address" type="text" placeholder="Address" v-model="add"/>
 
           <!-- Upadate map lat, long, or general search -->
           <button type="button" @click="updateMap">Go</button>
+          </br>
+          <p>Note: You may enter either a latitude and longitude pair, or alternatively just an address.</p>
       </div>
 
       <!-- Contains filters for each search criteria using vue -->
-      <h3>Filters</h3>
-      <div id="filters" class="control">
+      <div class="control">
+          <h3>Filters</h3>
           <div>
               <h5>Incident code</h5>
               <!-- I need to figure out how to get all police codes as checkboxes here -->
           </div>
+          </br>
           <div>
               <h5>Neighborhood ID</h5>
               <!-- I need to figure out how to get all Neighborhood codes as checkboxes here -->
           </div>
+          </br>
           <div>
               <h5>Date and time range</h5>
+              <label>Date range</label>
               <input type="text" placeholder="Start (YYYY-MM-DD)" v-model="dStart"/>
               <input type="text" placeholder="End (YYYY-MM-DD)" v-model="dEnd"/>
+              </br>
+              <label>Time range</label>
               <input type="text" placeholder="Start (HH:MM:SS)" v-model="tStart"/>
               <input type="text" placeholder="End (HH:MM:SS)" v-model="tEnd"/>
           </div>
+          </br>
           <div>
               <h5>Max incidents displayed</h5>
               <input type="text" placeholder="1000" v-model="max"/>
           </div>
+          </br>
 
           <!-- Upadate map filter options -->
           <button type="button" @click="updateFilters">Filter Incidents</button>
@@ -65,8 +87,13 @@
     </div>
 
     <!-- Main map app -->
-    <div id="app">
+    <div id="map">
         <div id="leafletmap"></div>
+    </div>
+
+    <!-- Table here -->
+    <div id="table">
+        <p> TAble here </p>
     </div>
 
 </body>
