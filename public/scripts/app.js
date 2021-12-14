@@ -1,5 +1,9 @@
 let app;
 let map;
+let appLongitude;
+let appLatitude;
+let appAddress;
+var markerArray= [];
 let neighborhood_markers = 
 [
     {location: [44.942068, -93.020521], marker: "Conway-Battlecreek-Highwood", number: 1},
@@ -23,6 +27,7 @@ let neighborhood_markers =
 
 function init() {
     let crime_url = 'http://localhost:8000';
+
 
     app = new Vue({
         el: '#app',
@@ -51,7 +56,7 @@ function init() {
     map.setMaxBounds([[44.883658, -93.217977], [45.008206, -92.993787]]);
 
       getJSON('http://localhost:8000/incidents?neighborhood=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17').then(result =>{
-          for(var i=1; i<18; i++){
+          for(var i=0; i<17; i++){
             var crimeArray = [];
               for(var j=0; j<result.length; j++){
                   if(result[j].neighborhood_number === i){
@@ -61,6 +66,7 @@ function init() {
               marker = new L.marker(neighborhood_markers[i].location)
               .bindPopup(neighborhood_markers[i].marker+" neighborhood has had "+crimeArray.length+" crimes")
               .addTo(map);
+              markerArray.push(marker);
           }
       });
 
@@ -78,29 +84,67 @@ function init() {
         console.log('Error:', error);
     });
 
-    // new Vue({
-    //     el: '#search',
-    //     data(){
-    //         return {
-    //             lat: map.getBounds().getCenter().lat,
-    //             long: map.getBounds().getCenter().lng
-    //         }
-    //     }
-    // })
-
-    new Vue({
-        el: '#search',
-        data() {
-          return {
-            lat: map.getBounds().getCenter().lat,
-            long: map.getBounds().getCenter().lng
-          }
+    var app1 = new Vue({ 
+        el: '#app-1',
+        data: {
+            message: 'hello world'
         }
-      });
+    });
+
+    appLatitude = new Vue({
+        el: '#latitude',
+        data: {
+            lat: map.getBounds().getCenter().lat
+        }
+    });
+
+    appLongitude = new Vue({
+        el: '#longitude',
+        data: function() {
+            return{
+                long: map.getBounds().getCenter().lng
+            } 
+        },
+        computed: {
+            getLongitude: function(){
+                return this.long;
+            }
+        }
+    })
+
+    coordinatesToAddress(map.getBounds().getCenter().lat, map.getBounds().getCenter().lng);
+    
+    // console.log(coordinatesToAddress(map.getBounds().getCenter().lat, map.getBounds().getCenter().lng).resolve());
+    
+}
+
+function updateMap(){
+    console.log(markerArray)
+    markerArray.forEach(marker =>{
+        map.removeLayer(marker);
+    })
+    var latLng = L.latLng(L.latLng(appLatitude.lat, appLongitude.long));
+    map.flyTo(latLng , 16);
+    marker = new L.marker(latLng)
+    .bindPopup(appLatitude.lat+" Latitude "+appLongitude.long+" longitude")
+    .addTo(map);
+    markerArray.push(marker);
 }
 
 
-
+function coordinatesToAddress(lat, long) {
+    var url = "https://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+long+"&zoom=18&addressdetails=1";
+    // var url = "https://nominatim.openstreetmap.org/format=getjson&reverse?lat="+lat+"&lon="+long;
+    return Promise.resolve(this.getJSON(url).then(resolve =>{
+        this.appAddress = resolve;
+        appAddress = new Vue({
+            el: '#address',
+            data: {
+                addr: this.appAddress.address.house_number.toString() +" "+ this.appAddress.address.road 
+            }
+        });
+    }));
+}
 
 
 function getJSON(url) {
