@@ -23,6 +23,8 @@
 
 <body onload="init()">
 
+    
+
   <!-- Navigation -->
   <div class="top-bar" id="realEstateMenu">
     <div class="top-bar-left">
@@ -33,19 +35,22 @@
       </ul>
     </div>
   </div>
-
+  
     <!-- Selections -->
     <div class="row">
-
+        <div id="app-1">
+            <h1>{{ message }}</h1>
+            <input type="text" v-model="message">
+        </div>
       <!-- Contains lat, long, and general search options -->
       <div class="control">
           <h3>Location Search<h3>
-          <input type="text" placeholder="Latitude" v-model="lat"/>
-          <input type="text" placeholder="Longitude" v-model="long"/>
-          <input id="address" type="text" placeholder="Address" v-model="add"/>
+            <input id="latitude" type="text" v-model.trim.lazy = "lat">
+            <input id="longitude" type="text" v-model.trim.lazy="long"/>
+            <input id="address" type="text" v-model="addr">
 
           <!-- Upadate map lat, long, or general search -->
-          <button type="button" @click="updateMap">Go</button>
+          <button type="button" onclick="updateMap()">Go</button>
           </br>
           <p>Note: You may enter either a latitude and longitude pair, or alternatively just an address.</p>
       </div>

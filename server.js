@@ -15,6 +15,7 @@ let db_filename = path.join(__dirname, 'db', 'stpaul_crime.sqlite3');
 let app = express();
 app.use(express.json());
 app.use(cors());
+app.use(express.static(public_dir));
 let port = 8000;
 
 // Open sqlite3 database
