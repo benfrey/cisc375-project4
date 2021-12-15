@@ -4,7 +4,7 @@ let longitude;
 let latitude;
 let fullAddress;
 var markerArray= [];
-let neighborhood_markers = 
+let neighborhood_markers =
 [
     {location: [44.942068, -93.020521], marker: "Conway-Battlecreek-Highwood", number: 1},
     {location: [44.977413, -93.025156], marker: "Greater East Side", number: 2},
@@ -32,18 +32,30 @@ function init() {
     app = new Vue({
         el: '#app',
         data: {
-            map: {
-                center: {
-                    lat: 44.955139,
-                    lng: -93.102222,
-                    address: ""
-                },
-                zoom: 12,
-                bounds: {
-                    nw: {lat: 45.008206, lng: -93.217977},
-                    se: {lat: 44.883658, lng: -92.993787}
-                }
+          lat: 44.955139,
+          longitude: -93.102222,
+          address: "",
+          incidentCodes: {},
+          neighborhoodIDs: {},
+          dStart: "",
+          dEnd: "",
+          tStart: "",
+          tEnd: "",
+          incidentCodeFilters: {},
+          neighborhoodIDFilters: {},
+          max: 1000,
+          map: {
+            center: {
+              lat: 44.955139,
+              lng: -93.102222,
+              address: ""
+            },
+            zoom: 12,
+            bounds: {
+              nw: {lat: 45.008206, lng: -93.217977},
+              se: {lat: 44.883658, lng: -92.993787}
             }
+          }
         }
     });
 
@@ -83,7 +95,7 @@ function init() {
     map.on('zoomend', function(){
         updateCenter();
     });
-    
+
 
     let district_boundary = new L.geoJson();
     district_boundary.addTo(map);
@@ -96,7 +108,7 @@ function init() {
     }).catch((error) => {
         console.log('Error:', error);
     });
-    
+
 }
 
 function moveMap(){

@@ -23,7 +23,7 @@
 
 <body onload="init()">
 
-    
+
 
   <!-- Navigation -->
   <div class="top-bar" id="realEstateMenu">
@@ -35,7 +35,7 @@
       </ul>
     </div>
   </div>
-  
+
     <!-- Selections -->
     <div class="row">
       <!-- Contains lat, long, and general search options -->
@@ -44,14 +44,14 @@
             <p>Note: You may enter either a latitude and longitude pair, or alternatively just an address.</p>
             <div class="row">
                 <h4>Latitude</h4>
-                <input id="latitude" type="text" value="" oninput="updateLatitude()">
+                <input id="latitude" type="text" value="" oninput="updateLatitude()" v-model="lat">
                 <h6>Current Latitude</h6>
                 <h6 id="latitude_value">44.95495413330279</h6>
-                <h4>longitude</h4> 
-                <input id="longitude" type="text" oninput="updateLongitude()">
+                <h4>longitude</h4>
+                <input id="longitude" type="text" oninput="updateLongitude()" v-model="long">
                 <h6>Current Longitude</h6>
                 <h6 id="longitude_value">-93.10229181518557</h6>
-                <button type="button" onclick="moveMap()">Go</button>
+                <button type="button" onclick="moveMap()" @click="<!-- Vue function -->">Go</button>
                 <div class="address">
                 <h2>OR</h2>
                 <h4>Address</h4>
@@ -59,13 +59,13 @@
                 <h4>Street</h4>
                 <button type="button" onclick="addressToCoordinates()">Go</button>
             </div>
-            
+
             </div>
 
           <!-- Upadate map lat, long, or general search -->
-          
+
           </br>
-         
+
       </div>
 
       <!-- Contains filters for each search criteria using vue -->
@@ -73,12 +73,22 @@
           <h3>Filters</h3>
           <div>
               <h5>Incident code</h5>
-              <!-- I need to figure out how to get all police codes as checkboxes here -->
+              <ul>
+                  <li v-for="(name, code) in incidentCodes">
+                      <input type="checkbox" value="code" v-model="incidentsCodesFilters">{{ name }},{{ code }}
+                  </li>
+              </ul>
+              <!-- May need some data type adjustment -->
           </div>
           </br>
           <div>
               <h5>Neighborhood ID</h5>
-              <!-- I need to figure out how to get all Neighborhood codes as checkboxes here -->
+              <ul>
+                  <li v-for="(n, id) in neighborhoodIDs">
+                      <input type="checkbox" value="id" v-model="neighborhoodIDFilters">{{ n.name }},{{ id }}
+                  </li>
+              </ul>
+              <!-- May need some datatype adjustment -->
           </div>
           </br>
           <div>
@@ -117,7 +127,7 @@
             <th>Code</th>
             <th>Incident Type</th>
           </tr>
-        </thead>          
+        </thead>
         <tbody>
           <tr v-for="row in rows" :key="user.id">
             <td>{{codes}}</td>
@@ -134,8 +144,8 @@
           <tr>
             <th>Neighborhood</th>
             <th>Neighborhood Number</th>
-        </tr> 
-        </thead>          
+        </tr>
+        </thead>
         <tbody>
           <tr v-for="row in rows" :key="user.id">
             <td>{{neighborhood}}</td>
@@ -158,7 +168,7 @@
           <th>Neighborhood Number</th>
           <th>Block</th>
         </tr>
-      </thead>          
+      </thead>
       <tbody>
         <tr v-for="row in rows" :key="user.id">
           <td>{{case_number}}</td>
