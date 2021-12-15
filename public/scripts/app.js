@@ -1,8 +1,8 @@
 let app;
 let map;
-let appLongitude;
-let appLatitude;
-let appAddress;
+let longitude;
+let latitude;
+let fullAddress;
 var markerArray= [];
 let neighborhood_markers = 
 [
@@ -70,6 +70,19 @@ function init() {
           }
       });
 
+    this.longitude = map.getBounds().getCenter().lng;
+    this.latitude = map.getBounds().getCenter().lat;
+    console.log(this.latitude);
+    console.log(this.longitude);
+    map.on('moveend', function() {
+        updateCenter();
+    });
+    map.on('dragend', function() {
+        updateCenter();
+    });
+    map.on('zoomend', function(){
+        updateCenter();
+    });
     
 
     let district_boundary = new L.geoJson();
@@ -83,69 +96,62 @@ function init() {
     }).catch((error) => {
         console.log('Error:', error);
     });
-
-    var app1 = new Vue({ 
-        el: '#app-1',
-        data: {
-            message: 'hello world'
-        }
-    });
-
-    appLatitude = new Vue({
-        el: '#latitude',
-        data: {
-            lat: map.getBounds().getCenter().lat
-        }
-    });
-
-    appLongitude = new Vue({
-        el: '#longitude',
-        data: function() {
-            return{
-                long: map.getBounds().getCenter().lng
-            } 
-        },
-        computed: {
-            getLongitude: function(){
-                return this.long;
-            }
-        }
-    })
-
-    coordinatesToAddress(map.getBounds().getCenter().lat, map.getBounds().getCenter().lng);
-    
-    // console.log(coordinatesToAddress(map.getBounds().getCenter().lat, map.getBounds().getCenter().lng).resolve());
     
 }
 
-function updateMap(){
-    console.log(markerArray)
+function moveMap(){
     markerArray.forEach(marker =>{
         map.removeLayer(marker);
     })
-    var latLng = L.latLng(L.latLng(appLatitude.lat, appLongitude.long));
+    var latLng = L.latLng(L.latLng(this.latitude, this.longitude));
     map.flyTo(latLng , 16);
     marker = new L.marker(latLng)
-    .bindPopup(appLatitude.lat+" Latitude "+appLongitude.long+" longitude")
+    .bindPopup(this.latitude+" Latitude "+this.longitude+" longitude")
     .addTo(map);
     markerArray.push(marker);
 }
+
+function updateLatitude() {
+    this.latitude = document.getElementById('latitude').value;
+    console.log(this.latitude);
+    latValue = document.getElementById('latitude_value');
+    latValue.textContent = this.latitude;
+}
+
+function updateLongitude() {
+    this.longitude = document.getElementById('longitude').value;
+    console.log(this.longitude);
+    longValue = document.getElementById('longitude_value');
+    longValue.textContent = this.longitude;
+}
+
+function updateCenter() {
+    this.longitude = map.getBounds().getCenter().lng;
+    this.latitude = map.getBounds().getCenter().lat;
+    longValue = document.getElementById('longitude_value');
+    longValue.textContent = this.longitude;
+    latValue = document.getElementById('latitude_value');
+    latValue.textContent = this.latitude;
+}
+
+function addressToCoordinates() {
+    address = document.getElementById('address').value;
+    url = "https://nominatim.openstreetmap.org/search?q=" + address + "&format=json&accept-language=en";
+    return this.getJSON(url).then(resolve =>{
+        this.fullAddress = resolve;
+        console.log(this.fullAddress);
+    })
+}
+
 
 
 function coordinatesToAddress(lat, long) {
     var url = "https://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+long+"&zoom=18&addressdetails=1";
     // var url = "https://nominatim.openstreetmap.org/format=getjson&reverse?lat="+lat+"&lon="+long;
     return Promise.resolve(this.getJSON(url).then(resolve =>{
-        this.appAddress = resolve;
-        appAddress = new Vue({
-            el: '#address',
-            data: {
-                addr: this.appAddress.address.house_number.toString() +" "+ this.appAddress.address.road 
-            }
-        });
+        this.fullAddress = resolve;
     }));
 }
-
 
 function getJSON(url) {
     return new Promise((resolve, reject) => {
