@@ -3,7 +3,7 @@ let map;
 let longitude;
 let latitude;
 let fullAddress;
-let tableArray;
+var tableArray = [];
 var markerArray= [];
 let neighborhood_markers =
 [
@@ -69,6 +69,7 @@ function init() {
     map.setMaxBounds([[44.883658, -93.217977], [45.008206, -92.993787]]);
 
       getJSON('http://localhost:8000/incidents?neighborhood=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17').then(result =>{
+          this.tableArray = result;
           for(var i=0; i<17; i++){
             var crimeArray = [];
               for(var j=0; j<result.length; j++){
@@ -112,53 +113,24 @@ function init() {
 
     console.log(map.getBounds())
 
-    createTableA();
-    createTableB();
-    createTableC();
-
+    updateFilters();
+    
+    
 }
 
-function createTableA(){
-    data = getJSON('/codes'); //This should be the only line that needs to be fixed
-    table = document.getElementById('codeBodyA');
-    let i;
-    for (i = 0; i < data.length; i++){
-        var row = `<tr>
-                        <td>${data[i].code}</td>
-                        <td>${data[i].incident_type}</td>
-                   </tr>
-        `
-        table.innerHTML +=row;
-    }
-}
 
-function createTableB(){
-    data = getJSON('/neighborhoods'); //This should be the only line that needs to be fixed
-    table = document.getElementById('codeBodyB');
+function createTable(){
+    table = document.getElementById('codeBody');
     let i;
-    for (i = 0; i < data.length; i++){
+    for (i = 0; i < tableArray.length; i++){
         var row = `<tr>
-                        <td>${data[i].neighborhood}</td>
-                        <td>${data[i].neighborhood_number}</td>
-                   </tr>
-        `
-        table.innerHTML +=row;
-    }
-}
-
-function createTableC(){
-    data = getJSON('/incidents'); //This should be the only line that needs to be fixed
-    table = document.getElementById('codeBodyC');
-    let i;
-    for (i = 0; i < data.length; i++){
-        var row = `<tr>
-                        <td>${data[i].case_number}</td>
-                        <td>${data[i].date_time}</td>
-                        <td>${data[i].code}</td>
-                        <td>${data[i].incident}</td>
-                        <td>${data[i].police_grid}</td>
-                        <td>${data[i].neighborhood_number}</td>
-                        <td>${data[i].block}</td>
+                        <td>${tableArray[i].case_number}</td>
+                        <td>${tableArray[i].date_time}</td>
+                        <td>${tableArray[i].code}</td>
+                        <td>${tableArray[i].incident}</td>
+                        <td>${tableArray[i].police_grid}</td>
+                        <td>${tableArray[i].neighborhood_number}</td>
+                        <td>${tableArray[i].block}</td>
                    </tr>
         `
         table.innerHTML +=row;
@@ -293,7 +265,9 @@ function updateFilters() {
     getJSON(url).then(resolve =>{
         this.tableArray = resolve;
         console.log(this.tableArray);
+        createTable();
     });
+    
 }
 
 function getJSON(url) {
