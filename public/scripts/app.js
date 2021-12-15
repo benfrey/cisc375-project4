@@ -99,7 +99,7 @@ function init() {
 
 
     let district_boundary = new L.geoJson();
-    district_boundary.addTo(map);
+    district_boundary.addTo(map);;
 
     getJSON('data/StPaulDistrictCouncil.geojson').then((result) => {
         // St. Paul GeoJSON
@@ -111,6 +111,58 @@ function init() {
     });
 
     console.log(map.getBounds())
+
+    createTableA();
+    createTableB();
+    createTableC();
+
+}
+
+function createTableA(){
+    data = getJSON('/codes'); //This should be the only line that needs to be fixed
+    table = document.getElementById('codeBodyA');
+    let i;
+    for (i = 0; i < data.length; i++){
+        var row = `<tr>
+                        <td>${data[i].code}</td>
+                        <td>${data[i].incident_type}</td>
+                   </tr>
+        `
+        table.innerHTML +=row;
+    }
+}
+
+function createTableB(){
+    data = getJSON('/neighborhoods'); //This should be the only line that needs to be fixed
+    table = document.getElementById('codeBodyB');
+    let i;
+    for (i = 0; i < data.length; i++){
+        var row = `<tr>
+                        <td>${data[i].neighborhood}</td>
+                        <td>${data[i].neighborhood_number}</td>
+                   </tr>
+        `
+        table.innerHTML +=row;
+    }
+}
+
+function createTableC(){
+    data = getJSON('/incidents'); //This should be the only line that needs to be fixed
+    table = document.getElementById('codeBodyC');
+    let i;
+    for (i = 0; i < data.length; i++){
+        var row = `<tr>
+                        <td>${data[i].case_number}</td>
+                        <td>${data[i].date_time}</td>
+                        <td>${data[i].code}</td>
+                        <td>${data[i].incident}</td>
+                        <td>${data[i].police_grid}</td>
+                        <td>${data[i].neighborhood_number}</td>
+                        <td>${data[i].block}</td>
+                   </tr>
+        `
+        table.innerHTML +=row;
+    }
 }
 
 function moveMap(){
