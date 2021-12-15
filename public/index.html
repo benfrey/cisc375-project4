@@ -44,19 +44,14 @@
             <p>Note: You may enter either a latitude and longitude pair, or alternatively just an address.</p>
             <div class="row">
                 <h4>Latitude</h4>
-                <input id="latitude" type="text" value="" oninput="updateLatitude()" v-model="lat">
-                <h6>Current Latitude</h6>
-                <h6 id="latitude_value">44.95495413330279</h6>
+                <input id="latitude" type="text" value="" onchange="updateLatitude()" v-model="lat">
                 <h4>longitude</h4>
-                <input id="longitude" type="text" oninput="updateLongitude()" v-model="long">
-                <h6>Current Longitude</h6>
-                <h6 id="longitude_value">-93.10229181518557</h6>
+                <input id="longitude" type="text" onchange="updateLongitude()" v-model="long">
                 <button type="button" onclick="moveMap()" @click="<!-- Vue function -->">Go</button>
                 <div class="address">
                 <h2>OR</h2>
                 <h4>Address</h4>
                 <input type="text" id="address">
-                <h4>Street</h4>
                 <button type="button" onclick="addressToCoordinates()">Go</button>
             </div>
 
@@ -83,11 +78,27 @@
           </br>
           <div>
               <h5>Neighborhood ID</h5>
-              <ul>
+              <input type="checkbox" name="neighborhood" value="1">1<br> 
+              <input type="checkbox" name="neighborhood" value="2">2<br>    
+              <input type="checkbox" name="neighborhood" value="3">3<br>    
+              <input type="checkbox" name="neighborhood" value="4">4<br>    
+              <input type="checkbox" name="neighborhood" value="5">5<br> 
+              <input type="checkbox" name="neighborhood" value="6">6<br>   
+              <input type="checkbox" name="neighborhood" value="7">7<br>  
+              <input type="checkbox" name="neighborhood" value="8">8<br>   
+              <input type="checkbox" name="neighborhood" value="9">9<br>     
+              <input type="checkbox" name="neighborhood" value="10">10<br>   
+              <input type="checkbox" name="neighborhood" value="11">11<br>    
+              <input type="checkbox" name="neighborhood" value="12">12<br>   
+              <input type="checkbox" name="neighborhood" value="13">13<br>  
+              <input type="checkbox" name="neighborhood" value="14">14<br>    
+              <input type="checkbox" name="neighborhood" value="15">15<br>  
+              <input type="checkbox" name="neighborhood" value="16">16<br>  
+              <input type="checkbox" name="neighborhood" value="17">17<br>                             <!-- <ul>
                   <li v-for="(n, id) in neighborhoodIDs">
                       <input type="checkbox" value="id" v-model="neighborhoodIDFilters">{{ n.name }},{{ id }}
                   </li>
-              </ul>
+              </ul> -->
               <!-- May need some datatype adjustment -->
           </div>
           </br>
@@ -109,7 +120,7 @@
           </br>
 
           <!-- Upadate map filter options -->
-          <button type="button" @click="updateFilters">Filter Incidents</button>
+          <button type="button" onclick="updateFilters()">Filter Incidents</button>
       </div>
 
     </div>
