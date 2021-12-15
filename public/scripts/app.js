@@ -175,23 +175,73 @@ function coordinatesToAddress(lat, long) {
 
 function updateFilters() {
     neighborhoodArray=[];
+    incidentArray=[]
+    $("input:checkbox[name=incident]:checked").each(function(){
+        incidentArray.push($(this).val());
+    });
+    url = "http://localhost:8000/incidents";
+
+    if(incidentArray.length>0){
+        url += "?code="
+        for(var i=0; i<incidentArray.length; i++){
+            url += incidentArray[i]+"";
+        }
+        url = url.substring(0, url.length-1);
+        console.log(url);
+    }
+
     $("input:checkbox[name=neighborhood]:checked").each(function(){
         neighborhoodArray.push($(this).val());
     });
-    url = "http://localhost:8000/incidents"
+    
     if(neighborhoodArray.length>0){
-        url += "?neighborhood_number="
+        if(incidentArray.length=0){
+            url += "?neighborhood_number="
         for(var i=0; i<neighborhoodArray.length; i++){
             url += neighborhoodArray[i]+",";
         }
         url = url.substring(0, url.length-1);
+        }else{
+            url += "&neighborhood_number="
+            for(var i=0; i<neighborhoodArray.length; i++){
+                url += neighborhoodArray[i]+",";
+            }
+            url = url.substring(0, url.length-1);
+        } 
     }
-    
 
+    dateStart = document.getElementById('dateStart').value;
+    dateEnd = document.getElementById('dateEnd').value;
+    maxIncidents = document.getElementById('maxIncidents').value;
+
+    if(neighborhoodArray.length>0 || incidentArray.length>0){
+        if(dateStart&&dateEnd){
+            url+= "&start_date="+dateStart+"&end_date="+dateEnd;
+        }else if(dateStart && !dateEnd){
+            url+= "&start_date="+dateStart;
+        }else if(!dateStart && dateEnd){
+            url+= "&end_date="+dateEnd;
+        }
+    }else if(dateStart && dateEnd){
+        url+= "?start_date="+dateStart+"&end_date="+dateEnd;
+    }else if(dateStart && !dateEnd){
+        url+= "?start_date="+dateStart;
+    }else if(!dateStart && dateEnd){
+        url+= "?end_date="+dateEnd;
+    }
+
+    if(maxIncidents){
+        if(neighborhoodArray.length>0 || incidentArray.length>0 || dateStart || dateEnd){
+            url += "&limit="+maxIncidents;
+        }else{
+            url += "?limit="+maxIncidents;
+        }
+    }
+    console.log(url);
     getJSON(url).then(resolve =>{
         this.tableArray = resolve;
         console.log(this.tableArray);
-    })
+    });
 }
 
 function getJSON(url) {
