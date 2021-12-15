@@ -38,21 +38,34 @@
   
     <!-- Selections -->
     <div class="row">
-        <div id="app-1">
-            <h1>{{ message }}</h1>
-            <input type="text" v-model="message">
-        </div>
       <!-- Contains lat, long, and general search options -->
       <div class="control">
           <h3>Location Search<h3>
-            <input id="latitude" type="text" v-model.trim.lazy = "lat">
-            <input id="longitude" type="text" v-model.trim.lazy="long"/>
-            <input id="address" type="text" v-model="addr">
+            <p>Note: You may enter either a latitude and longitude pair, or alternatively just an address.</p>
+            <div class="row">
+                <h4>Latitude</h4>
+                <input id="latitude" type="text" value="" oninput="updateLatitude()">
+                <h6>Current Latitude</h6>
+                <h6 id="latitude_value">44.95495413330279</h6>
+                <h4>longitude</h4> 
+                <input id="longitude" type="text" oninput="updateLongitude()">
+                <h6>Current Longitude</h6>
+                <h6 id="longitude_value">-93.10229181518557</h6>
+                <button type="button" onclick="moveMap()">Go</button>
+                <div class="address">
+                <h2>OR</h2>
+                <h4>Address</h4>
+                <input type="text" id="address">
+                <h4>Street</h4>
+                <button type="button" onclick="addressToCoordinates()">Go</button>
+            </div>
+            
+            </div>
 
           <!-- Upadate map lat, long, or general search -->
-          <button type="button" onclick="updateMap()">Go</button>
+          
           </br>
-          <p>Note: You may enter either a latitude and longitude pair, or alternatively just an address.</p>
+         
       </div>
 
       <!-- Contains filters for each search criteria using vue -->
