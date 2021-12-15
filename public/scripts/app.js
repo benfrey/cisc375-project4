@@ -3,6 +3,7 @@ let map;
 let longitude;
 let latitude;
 let fullAddress;
+let tableArray;
 var markerArray= [];
 let neighborhood_markers =
 [
@@ -110,33 +111,6 @@ function init() {
     });
 
     console.log(map.getBounds())
-
-    //tableA = document.getElementById('tableA');
-    //tableA.rows = createTable(getJSON('/codes'));
-
-    //tableB = document.getElementById('tableB');
-    //tableB.rows = createTable(getJSON('/neighborhoods'));
-
-    //tableC = document.getElementById('tableC');
-    //tableC.rows = createTable(getJSON('/incidents'));
-
-    //tableData = document.getElementById('tableData');
-    //tableData.aData = getJSON('/codes')+'+'+getJSON('neighborhoods')+'+'+getJSON('/incidents');
-    //test = document.getElementById('testd');
-    //Promise.resolve(getJSON('/codes').then(resolve =>{
-    //    testd.textContent = resolve;
-    //}));
-
-    /*function createTable(data){
-    export default {
-        data() {
-            return {
-                rows: data
-            };
-        }
-    };
-    }
-    */
 }
 
 function moveMap(){
@@ -154,9 +128,6 @@ function moveMap(){
 
 function updateLatitude() {
     var lat = document.getElementById('latitude').value;
-    if(lat < 44.8883383134382 || lat > 44.99159144730164){
-        alert("error the latitude is out of bounds")
-    }
     this.latitude = lat;
     updateValues();
 }
@@ -200,6 +171,27 @@ function coordinatesToAddress(lat, long) {
     return Promise.resolve(this.getJSON(url).then(resolve =>{
         this.fullAddress = resolve;
     }));
+}
+
+function updateFilters() {
+    neighborhoodArray=[];
+    $("input:checkbox[name=neighborhood]:checked").each(function(){
+        neighborhoodArray.push($(this).val());
+    });
+    url = "http://localhost:8000/incidents"
+    if(neighborhoodArray.length>0){
+        url += "?neighborhood_number="
+        for(var i=0; i<neighborhoodArray.length; i++){
+            url += neighborhoodArray[i]+",";
+        }
+        url = url.substring(0, url.length-1);
+    }
+    
+
+    getJSON(url).then(resolve =>{
+        this.tableArray = resolve;
+        console.log(this.tableArray);
+    })
 }
 
 function getJSON(url) {
