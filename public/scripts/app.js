@@ -110,6 +110,33 @@ function init() {
     });
 
     console.log(map.getBounds())
+
+    //tableA = document.getElementById('tableA');
+    //tableA.rows = createTable(getJSON('/codes'));
+
+    //tableB = document.getElementById('tableB');
+    //tableB.rows = createTable(getJSON('/neighborhoods'));
+
+    //tableC = document.getElementById('tableC');
+    //tableC.rows = createTable(getJSON('/incidents'));
+
+    //tableData = document.getElementById('tableData');
+    //tableData.aData = getJSON('/codes')+'+'+getJSON('neighborhoods')+'+'+getJSON('/incidents');
+    //test = document.getElementById('testd');
+    //Promise.resolve(getJSON('/codes').then(resolve =>{
+    //    testd.textContent = resolve;
+    //}));
+
+    /*function createTable(data){
+    export default {
+        data() {
+            return {
+                rows: data
+            };
+        }
+    };
+    }
+    */
 }
 
 function moveMap(){
