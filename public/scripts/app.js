@@ -109,6 +109,7 @@ function init() {
         console.log('Error:', error);
     });
 
+    console.log(map.getBounds())
 }
 
 function moveMap(){
@@ -121,37 +122,46 @@ function moveMap(){
     .bindPopup(this.latitude+" Latitude "+this.longitude+" longitude")
     .addTo(map);
     markerArray.push(marker);
+    updateValues();
 }
 
 function updateLatitude() {
-    this.latitude = document.getElementById('latitude').value;
-    console.log(this.latitude);
-    latValue = document.getElementById('latitude_value');
-    latValue.textContent = this.latitude;
+    var lat = document.getElementById('latitude').value;
+    if(lat < 44.8883383134382 || lat > 44.99159144730164){
+        alert("error the latitude is out of bounds")
+    }
+    this.latitude = lat;
+    updateValues();
 }
 
 function updateLongitude() {
     this.longitude = document.getElementById('longitude').value;
     console.log(this.longitude);
-    longValue = document.getElementById('longitude_value');
-    longValue.textContent = this.longitude;
+    updateValues();
 }
 
 function updateCenter() {
     this.longitude = map.getBounds().getCenter().lng;
     this.latitude = map.getBounds().getCenter().lat;
-    longValue = document.getElementById('longitude_value');
-    longValue.textContent = this.longitude;
-    latValue = document.getElementById('latitude_value');
-    latValue.textContent = this.latitude;
+    updateValues();
+}
+
+function updateValues() {
+    lat = document.getElementById('latitude').setAttribute('value', this.latitude);
+    lng = document.getElementById('longitude').setAttribute('value', this.longitude);
 }
 
 function addressToCoordinates() {
     address = document.getElementById('address').value;
+    address += " saint Paul Minnesota";
     url = "https://nominatim.openstreetmap.org/search?q=" + address + "&format=json&accept-language=en";
     return this.getJSON(url).then(resolve =>{
-        this.fullAddress = resolve;
+        this.fullAddress = resolve[0];
+        this.latitude = this.fullAddress.lat;
+        this.longitude = this.fullAddress.lon;
         console.log(this.fullAddress);
+        updateValues();
+        moveMap();
     })
 }
 
