@@ -4,7 +4,7 @@ let longitude;
 let latitude;
 let fullAddress;
 var tableArray = [];
-var markerArray= [];
+var markerArray= []; 
 let neighborhood_markers =
 [
     {location: [44.942068, -93.020521], marker: "Conway-Battlecreek-Highwood", number: 1},
@@ -122,19 +122,22 @@ function init() {
 function createTable(){
     table = document.getElementById('codeBody');
     let i;
+    var string = '';
     for (i = 0; i < tableArray.length; i++){
+        var temp = tableArray[i];
         var row = `<tr>
-                        <td>${tableArray[i].case_number}</td>
-                        <td>${tableArray[i].date_time}</td>
-                        <td>${tableArray[i].code}</td>
-                        <td>${tableArray[i].incident}</td>
-                        <td>${tableArray[i].police_grid}</td>
-                        <td>${tableArray[i].neighborhood_number}</td>
-                        <td>${tableArray[i].block}</td>
+                        <td>${temp.case_number}</td>
+                        <td>${temp.date_time}</td>
+                        <td>${temp.code}</td>
+                        <td>${temp.incident}</td>
+                        <td>${temp.police_grid}</td>
+                        <td>${temp.neighborhood_number}</td>
+                        <td>${temp.block}</td>
                    </tr>
         `
-        table.innerHTML +=row;
+        string +=row;
     }
+    table.innerHTML = string;
 }
 
 function moveMap(){
