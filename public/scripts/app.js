@@ -313,14 +313,14 @@ function updateFilters() {
     });
 
     if(neighborhoodArray.length>0){
-        if(incidentArray.length=1){
-            url += "?neighborhood_number="
+        if(incidentArray.length=0){
+            url += "?neighborhood="
         for(var i=0; i<neighborhoodArray.length; i++){
             url += neighborhoodArray[i]+",";
         }
         url = url.substring(0, url.length-1);
         }else{
-            url += "&neighborhood_number="
+            url += "&neighborhood="
             for(var i=0; i<neighborhoodArray.length; i++){
                 url += neighborhoodArray[i]+",";
             }
