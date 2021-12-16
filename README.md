@@ -36,9 +36,9 @@ Implement the following to earn 45/60 points (grade: C)
   - Can natively embed or upload to YouTube and embed (Ben will still do)
   - Six interesting findings that you discovered using your application (Ben will still do)
 
-Implement additional features to earn a B or A (5 pts each)
+~~Implement additional features to earn a B or A (5 pts each) (all done)~~
 
-- Create UI controls to filter crime data (Ben)
+- ~~Create UI controls to filter crime data (Ben)~~
   - ~~Filter based on the following~~
     - ~~incident_type: list of checkboxes per incident_type (done)~~
       - ~~OK (in fact recommended) to aggregate similar incident types (e.g. codes 1800 - 1885 are all sub-categories of 'Narcotics') (done)~~
