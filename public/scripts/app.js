@@ -4,7 +4,7 @@ let longitude;
 let latitude;
 let fullAddress;
 var tableArray = [];
-var markerArray= []; 
+var markerArray= [];
 let neighborhood_markers =
 [
     {location: [44.942068, -93.020521], marker: "Conway-Battlecreek-Highwood", number: 1},
@@ -60,6 +60,7 @@ function init() {
         }
     });
 
+    // Leaflet map
     map = L.map('leafletmap').setView([app.map.center.lat, app.map.center.lng], app.map.zoom);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -70,6 +71,7 @@ function init() {
 
       getJSON('http://localhost:8000/incidents?neighborhood=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17').then(result =>{
           this.tableArray = result;
+          // this code should be illegal... like a nested for loop?...
           for(var i=0; i<17; i++){
             var crimeArray = [];
               for(var j=0; j<result.length; j++){
@@ -83,6 +85,7 @@ function init() {
               markerArray.push(marker);
           }
       });
+
 
     this.longitude = map.getBounds().getCenter().lng;
     this.latitude = map.getBounds().getCenter().lat;
@@ -102,6 +105,7 @@ function init() {
     let district_boundary = new L.geoJson();
     district_boundary.addTo(map);;
 
+    // Boundary for map
     getJSON('data/StPaulDistrictCouncil.geojson').then((result) => {
         // St. Paul GeoJSON
         $(result.features).each(function(key, value) {
@@ -114,8 +118,8 @@ function init() {
     console.log(map.getBounds())
 
     updateFilters();
-    
-    
+
+
 }
 
 
@@ -220,7 +224,7 @@ function updateFilters() {
     $("input:checkbox[name=neighborhood]:checked").each(function(){
         neighborhoodArray.push($(this).val());
     });
-    
+
     if(neighborhoodArray.length>0){
         if(incidentArray.length=0){
             url += "?neighborhood_number="
@@ -234,7 +238,7 @@ function updateFilters() {
                 url += neighborhoodArray[i]+",";
             }
             url = url.substring(0, url.length-1);
-        } 
+        }
     }
 
     dateStart = document.getElementById('dateStart').value;
@@ -270,7 +274,7 @@ function updateFilters() {
         console.log(this.tableArray);
         createTable();
     });
-    
+
 }
 
 function getJSON(url) {
