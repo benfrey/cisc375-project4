@@ -70,12 +70,21 @@ function init() {
     map.setMaxBounds([[44.883658, -93.217977], [45.008206, -92.993787]]);
 
       getJSON('http://localhost:8000/incidents?neighborhood=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17').then(result =>{
+          console.log('result', result);
           this.tableArray = result;
+            for(var x=0; x<tableArray.length; x++){
+                str = tableArray[x].block;
+                index = tableArray[x].block.indexOf("X");
+                char = str[index];
+                replaced = str.replace(char, "0");
+                tableArray[x].block = replaced;
+            }
           // this code should be illegal... like a nested for loop?...
           for(var i=0; i<17; i++){
             var crimeArray = [];
               for(var j=0; j<result.length; j++){
                   if(result[j].neighborhood_number === i){
+
                       crimeArray.push(result[i])
                   }
               }
@@ -115,13 +124,33 @@ function init() {
         console.log('Error:', error);
     });
 
-    console.log(map.getBounds())
-
     updateFilters();
-
 
 }
 
+function selectTableRow(rowNum){
+    row = tableArray[rowNum];
+    //remove av, pa, rd, 
+    address = row.block + " saint paul minnesota"
+    url = "https://nominatim.openstreetmap.org/search?q=" + address + "&format=json&accept-language=en";
+    getJSON(url).then(resolve =>{
+        this.fullAddress = resolve[0];
+        this.latitude = this.fullAddress.lat;
+        this.longitude = this.fullAddress.lon;
+        markerArray.forEach(marker =>{
+            map.removeLayer(marker);
+        })
+        var latLng = L.latLng(L.latLng(this.latitude, this.longitude));
+        map.flyTo(latLng , 16);
+        marker = new L.marker(latLng)
+        .bindPopup("address: "+row.block+ "\nIncident: "+ row.incident)
+        .addTo(map);
+        markerArray.push(marker);
+        updateValues();
+        
+    })
+
+}
 
 function createTable(){
     table = document.getElementById('codeBody');
@@ -147,6 +176,7 @@ function createTable(){
                         <td>${temp.police_grid}</td>
                         <td>${temp.neighborhood_number}</td>
                         <td>${temp.block}</td>
+                        <td><button type="button" onClick="selectTableRow(${i})">Select</button></td>
                    </tr>
         `
         
@@ -282,7 +312,13 @@ function updateFilters() {
     console.log(url);
     getJSON(url).then(resolve =>{
         this.tableArray = resolve;
-        console.log(this.tableArray);
+        for(var i=0; i<this.tableArray.length; i++){
+            str = tableArray[i].block;
+            index = tableArray[i].block.indexOf("X");
+            char = str[index];
+            replaced = str.replace(char, "0");
+            tableArray[i].block = replaced;
+        }
         createTable();
     });
 
