@@ -140,7 +140,8 @@ function createTable(){
 
         var row = `
                         <td>${temp.case_number}</td>
-                        <td>${temp.date_time}</td>
+                        <td>${temp.date}</td>
+                        <td>${temp.time}</td>
                         <td>${temp.code}</td>
                         <td>${temp.incident}</td>
                         <td>${temp.police_grid}</td>
