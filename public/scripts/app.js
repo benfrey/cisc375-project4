@@ -4,7 +4,7 @@ let longitude;
 let latitude;
 let fullAddress;
 var tableArray = [];
-var markerArray= []; 
+var markerArray= [];
 let neighborhood_markers =
 [
     {location: [44.942068, -93.020521], marker: "Conway-Battlecreek-Highwood", number: 1},
@@ -60,6 +60,7 @@ function init() {
         }
     });
 
+    // Leaflet map
     map = L.map('leafletmap').setView([app.map.center.lat, app.map.center.lng], app.map.zoom);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -77,10 +78,8 @@ function init() {
                 char = str[index];
                 replaced = str.replace(char, "0");
                 tableArray[x].block = replaced;
-                // tableArray[x].block.replaceAt(index, "0");
-                // newString = tableArray[x].block.replaceAt(index, "0");
-                // console.log(newString);
             }
+          // this code should be illegal... like a nested for loop?...
           for(var i=0; i<17; i++){
             var crimeArray = [];
               for(var j=0; j<result.length; j++){
@@ -95,6 +94,7 @@ function init() {
               markerArray.push(marker);
           }
       });
+
 
     this.longitude = map.getBounds().getCenter().lng;
     this.latitude = map.getBounds().getCenter().lat;
@@ -114,6 +114,7 @@ function init() {
     let district_boundary = new L.geoJson();
     district_boundary.addTo(map);;
 
+    // Boundary for map
     getJSON('data/StPaulDistrictCouncil.geojson').then((result) => {
         // St. Paul GeoJSON
         $(result.features).each(function(key, value) {
@@ -124,7 +125,7 @@ function init() {
     });
 
     updateFilters();
-    
+
 }
 
 function selectTableRow(rowNum){
@@ -157,9 +158,19 @@ function createTable(){
     var string = '';
     for (i = 0; i < tableArray.length; i++){
         var temp = tableArray[i];
-        var row = `<tr>
+        var cType = '<tr style=\'';
+        if (temp.incident == 'Theft' || temp.incident == 'Auto Theft' || temp.incident == 'Burglary' || temp.incident == 'Vandalism' || temp.incident == 'Graffiti' || temp.incident == 'Robbery'){
+            cType += 'background-color:rgb(125, 125, 185)\'>';
+        }else if (temp.incident == 'Simple Asasult Dom.' || temp.incident == 'Agg. Assault' || temp.incident == 'Arson' || temp.incident == 'Agg. Assault Dom.' || temp.incident == 'Rape'){
+            cType += 'background-color:rgb(185, 125, 125)\'>';
+        }else{
+            cType += 'background-color:rgb(125, 185, 125)\'>';
+        }
+
+        var row = `
                         <td>${temp.case_number}</td>
-                        <td>${temp.date_time}</td>
+                        <td>${temp.date}</td>
+                        <td>${temp.time}</td>
                         <td>${temp.code}</td>
                         <td>${temp.incident}</td>
                         <td>${temp.police_grid}</td>
@@ -168,7 +179,8 @@ function createTable(){
                         <td><button type="button" onClick="selectTableRow(${i})">Select</button></td>
                    </tr>
         `
-        string +=row;
+        
+        string += cType+row;
     }
     table.innerHTML = string;
 }
@@ -253,7 +265,7 @@ function updateFilters() {
     $("input:checkbox[name=neighborhood]:checked").each(function(){
         neighborhoodArray.push($(this).val());
     });
-    
+
     if(neighborhoodArray.length>0){
         if(incidentArray.length=0){
             url += "?neighborhood_number="
@@ -267,7 +279,7 @@ function updateFilters() {
                 url += neighborhoodArray[i]+",";
             }
             url = url.substring(0, url.length-1);
-        } 
+        }
     }
 
     dateStart = document.getElementById('dateStart').value;
@@ -309,7 +321,7 @@ function updateFilters() {
         }
         createTable();
     });
-    
+
 }
 
 function getJSON(url) {

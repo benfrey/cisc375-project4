@@ -163,9 +163,9 @@ app.get('/incidents', (req, res) => {
       sqlQuery += " WHERE date_time >= ?" ;
       params.push(req.query.start_date);
     }
-    
+
   }
-    
+
   // End of sql query statement
   sqlQuery += " ORDER BY date_time";
 
@@ -189,6 +189,16 @@ app.get('/incidents', (req, res) => {
       });
   })
   .then(rows => {
+    // Process rows to seperate date and time (Ben)
+    for(var i=0; i<rows.length; i++){
+        let [date, time] = rows[i].date_time.split('T');
+        rows[i].date = date;
+        rows[i].time = time
+
+        // Delete all date_time elements from all JSON arrays
+        delete rows[i].date_time;
+    }
+
     res.status(200).type('application/json').send(rows);
   }).catch(err => {
     res.status(500).send("Error querying database");
