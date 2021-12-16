@@ -134,19 +134,24 @@ function selectTableRow(rowNum){
     address = row.block + " saint paul minnesota"
     url = "https://nominatim.openstreetmap.org/search?q=" + address + "&format=json&accept-language=en";
     getJSON(url).then(resolve =>{
-        this.fullAddress = resolve[0];
-        this.latitude = this.fullAddress.lat;
-        this.longitude = this.fullAddress.lon;
-        markerArray.forEach(marker =>{
-            map.removeLayer(marker);
-        })
-        var latLng = L.latLng(L.latLng(this.latitude, this.longitude));
-        map.flyTo(latLng , 16);
-        marker = new L.marker(latLng)
-        .bindPopup("address: "+row.block+ "\nIncident: "+ row.incident)
-        .addTo(map);
-        markerArray.push(marker);
-        updateValues();
+        try{
+            this.fullAddress = resolve[0];
+            this.latitude = this.fullAddress.lat;
+            this.longitude = this.fullAddress.lon;
+            markerArray.forEach(marker =>{
+                map.removeLayer(marker);
+            })
+            var latLng = L.latLng(L.latLng(this.latitude, this.longitude));
+            map.flyTo(latLng , 16);
+            marker = new L.marker(latLng)
+            .bindPopup("address: "+row.block+ "\nIncident: "+ row.incident)
+            .addTo(map);
+            markerArray.push(marker);
+            updateValues();
+            
+        }catch{
+            window.alert("this address could not be found with error ");
+        }
         
     })
 
@@ -267,7 +272,7 @@ function updateFilters() {
     });
 
     if(neighborhoodArray.length>0){
-        if(incidentArray.length=0){
+        if(incidentArray.length=1){
             url += "?neighborhood_number="
         for(var i=0; i<neighborhoodArray.length; i++){
             url += neighborhoodArray[i]+",";
@@ -285,6 +290,11 @@ function updateFilters() {
     dateStart = document.getElementById('dateStart').value;
     dateEnd = document.getElementById('dateEnd').value;
     maxIncidents = document.getElementById('maxIncidents').value;
+    startTime = document.getElementById('startTime').value;
+    endTime = document.getElementById('endTime').value;
+    console.log('start Time',startTime)
+
+    
 
     if(neighborhoodArray.length>0 || incidentArray.length>0){
         if(dateStart&&dateEnd){
@@ -312,13 +322,30 @@ function updateFilters() {
     console.log(url);
     getJSON(url).then(resolve =>{
         this.tableArray = resolve;
+        tempArray=[];
         for(var i=0; i<this.tableArray.length; i++){
             str = tableArray[i].block;
             index = tableArray[i].block.indexOf("X");
             char = str[index];
             replaced = str.replace(char, "0");
             tableArray[i].block = replaced;
+            if(startTime || endTime){
+                if(startTime && !endTime){
+                    if(tableArray[i].time > startTime ){
+                        tempArray.push(tableArray[i]);
+                    }
+                }else if(!startTime && endTime){
+                    if(tableArray[i].time < endTime ){
+                        tempArray.push(tableArray[i]);
+                    }
+                }else if(startTime && endTime){
+                    if(tableArray[i].time < endTime && tableArray[i] >startTime){
+                        tempArray.push(tableArray[i]);
+                    }
+                }
+            }
         }
+        this.tableArray = tempArray;
         createTable();
     });
 

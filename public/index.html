@@ -108,10 +108,14 @@
           </div>
           </br>
           <div>
-              <h5>Date range</h5>
+              <h5>Date and Time range</h5>
               <label>Date range</label>
               <input type="text" id="dateStart" placeholder="Start (YYYY-MM-DD)"/>
-              <input type="text" id="dateEnd" placeholder="End (YYYY-MM-DD)" v-model="dEnd"/>
+              <input type="text" id="dateEnd" placeholder="End (YYYY-MM-DD)">
+              <br>
+              <label>Time Range</label>
+              <input type="text" value="0:00" id="startTime">
+              <input type="text" value="24:00" id="endTime">
               </br>
           </div>
           </br>
