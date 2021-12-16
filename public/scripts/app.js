@@ -88,7 +88,13 @@ function init() {
                       crimeArray.push(result[i])
                   }
               }
-              marker = new L.marker(neighborhood_markers[i].location)
+              var myIcon = L.icon({
+                  iconUrl: './images/neighborhood.png',
+                  iconSize: [30, 30],
+                  iconAnchor: [30, 30],
+                  popupAnchor: [-15, -30],
+              });
+              marker = new L.marker(neighborhood_markers[i].location, {icon: myIcon})
               .bindPopup(neighborhood_markers[i].marker+" neighborhood has had "+crimeArray.length+" crimes")
               .addTo(map);
               markerArray.push(marker);
@@ -187,7 +193,7 @@ function createTable(){
                         <td>${temp.time}</td>
                         <td>${temp.incident}</td>
                         <td>${temp.police_grid}</td>
-                        <td>${temp.neighborhood}</td>
+                        <td>${temp.neighborhood_number}</td>
                         <td>${temp.block}</td>
                         <td><button type="button" onClick="selectTableRow(${i})">Select</button></td>
                    </tr>
@@ -272,12 +278,12 @@ function deleteEntry(caseNumber) {
 
   // Got URL, now delete
   deleteJSON(url).then(result =>{
-      console.log('result', result);
-      window.alert("Case "+caseNumber+" succesfully removed."); // alert user of deleted case
-      // update table and map here
+    // No result data, just errors?
   }).catch(e => {
     if(e.status == 200){
       window.alert("Case "+caseNumber+" succesfully removed."); // alert user of deleted case
+      // reset
+      resetButton();
     } else {
       window.alert("Error deleting "+caseNumber+"."); // alert user of deleted case
     }
@@ -426,4 +432,9 @@ function getJSON(url) {
             }
         });
     });
+}
+
+// Reset page
+function resetButton() {
+  location.reload();
 }
