@@ -10,16 +10,16 @@
 # Project components
 Implement the following to earn 45/60 points (grade: C)
 
-- Show a map using the Leaflet API **(Grant - done)**
-  - Pan and zoom available with mouse click-and-drag and scroll wheel interaction (done)
-    - Limit pan and zoom so map does not display regions outside of St. Paul (done)
-    - HINT: zoom levels 11-18 are good (done)
-    - NOTE: this is already the default setup in the starter code! (done)
-  - Have an input box and 'Go' button for a user to type a location (lat/long coordinates, address, etc.) **(Ben will do UI - done)**
-    - Map should update when location is entered and 'Go' button pressed (Grant - done)
-    - Input box text should update with new location (lat/long coordinates or address) when map is panned/zoomed (grant - done)
-      - NOTE: updating once pan/zoom has ended is recommended - constantly updating this during a pan will overwhelm the system (done)
-    <span style="background-color: #FFFF00">- Use the Nominatim API (https://nominatim.org/release-docs/develop/api/Overview/ (Links to an external site.) (Links to an external site.)) to convert between address and lat/long (Grant)</span>
+~~- Show a map using the Leaflet API **(Grant - done)**~~
+  ~~- Pan and zoom available with mouse click-and-drag and scroll wheel interaction (done)~~
+    ~~- Limit pan and zoom so map does not display regions outside of St. Paul (done)~~
+    ~~- HINT: zoom levels 11-18 are good (done)~~
+    ~~- NOTE: this is already the default setup in the starter code! (done)~~
+ ~~ - Have an input box and 'Go' button for a user to type a location (lat/long coordinates, address, etc.) (Ben will do UI - done)~~
+    ~~- Map should update when location is entered and 'Go' button pressed (Grant - done)~~
+    ~~- Input box text should update with new location (lat/long coordinates or address) when map is panned/zoomed (grant - done)~~
+      ~~- NOTE: updating once pan/zoom has ended is recommended - constantly updating this during a pan will overwhelm the system (done)~~
+    - Use the Nominatim API (https://nominatim.org/release-docs/develop/api/Overview/ (Links to an external site.) (Links to an external site.)) to convert between address and lat/long (Grant)
     - Clamp input values if lat/long is outside of St. Paul's bounding box **(Grant - done)**
 - Retrieve data from your St. Paul Crime API (Logan - done)
   - By default, include 1,000 most recent crimes in the database (done)
