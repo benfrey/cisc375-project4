@@ -50,7 +50,7 @@ Implement additional features to earn a B or A (5 pts each)
     - ~~It's OK to have a separate 'Update' button, so users can change many filters before triggering a new request (we have update button - done)~~
 - ~~Style the background color of rows in the table to categorize crimes as "violent crimes" (crimes against another person), "property crimes" (crimes against a person's or business' property), or "other crimes" (anything else) (Logan - done)~~
   - ~~You can categorize as you see fit - here's a link with more info to help though: https://www.justia.com/criminal/offenses/ (Links to an external site.) (done)~~
-  - Also include a legend for the colors (Ben can do)
+  - ~~Also include a legend for the colors (Ben can do)~~
 - ~~Add a marker to the map at exact crime location when selected from the table (Grant - done)~~
   - ~~Make marker a different color / icon than the markers for the total crimes per neighborhood (Ben will still do)~~
   - ~~Create a popup with date, time, incident, and delete button (Ben will still do)~~
