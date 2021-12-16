@@ -129,7 +129,16 @@ function createTable(){
     var string = '';
     for (i = 0; i < tableArray.length; i++){
         var temp = tableArray[i];
-        var row = `<tr>
+        var cType = '<tr style=\'';
+        if (temp.incident == 'Theft' || temp.incident == 'Auto Theft' || temp.incident == 'Burglary' || temp.incident == 'Vandalism' || temp.incident == 'Graffiti' || temp.incident == 'Robbery'){
+            cType += 'background-color:rgb(125, 125, 185)\'>';
+        }else if (temp.incident == 'Simple Asasult Dom.' || temp.incident == 'Agg. Assault' || temp.incident == 'Arson' || temp.incident == 'Agg. Assault Dom.' || temp.incident == 'Rape'){
+            cType += 'background-color:rgb(185, 125, 125)\'>';
+        }else{
+            cType += 'background-color:rgb(125, 185, 125)\'>';
+        }
+
+        var row = `
                         <td>${temp.case_number}</td>
                         <td>${temp.date_time}</td>
                         <td>${temp.code}</td>
@@ -139,7 +148,8 @@ function createTable(){
                         <td>${temp.block}</td>
                    </tr>
         `
-        string +=row;
+        
+        string += cType+row;
     }
     table.innerHTML = string;
 }
