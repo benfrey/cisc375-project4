@@ -149,7 +149,7 @@ function selectTableRow(rowNum){
                        "<br/>Time: " + row.time +
                        "<br/>Address: " + row.block +
                        "<br/>Incident: " + row.incident +
-                       '<br/><button type="button" onClick="deleteEntry('+ this.case_number + ')" style="color:red">Delete</button>')
+                       '<br/><button type="button" onClick="deleteEntry('+ row.case_number + ')" style="color:red">Delete</button>')
             .addTo(map);
             markerArray.push(marker);
             updateValues();
@@ -246,6 +246,7 @@ function addressToCoordinates() {
     url = "https://nominatim.openstreetmap.org/search?q=" + address + "&format=json&accept-language=en";
     return this.getJSON(url).then(resolve =>{
         this.fullAddress = resolve[0];
+        console.log(resolve)
         this.latitude = this.fullAddress.lat;
         this.longitude = this.fullAddress.lon;
         console.log(this.fullAddress);
@@ -264,13 +265,22 @@ function coordinatesToAddress(lat, long) {
 }
 
 // Delete case
-function deleteEntry() {
-  url = "http://localhost:8000/remove-incident?";
-  url += 10; // needs to be fed a value
-  // Got URL, so resolve by creating master tableArray that has been filtered.
-  getJSON(url).then(resolve =>{
-      x = 1;
-      // Error message or success.
+function deleteEntry(caseNumber) {
+  url = "http://localhost:8000/remove-incident?case_number=";
+  url += caseNumber; // needs to be fed a value
+  console.log(url);
+
+  // Got URL, now delete
+  deleteJSON(url).then(result =>{
+      console.log('result', result);
+      window.alert("Case "+caseNumber+" succesfully removed."); // alert user of deleted case
+      // update table and map here
+  }).catch(e => {
+    if(e.status == 200){
+      window.alert("Case "+caseNumber+" succesfully removed."); // alert user of deleted case
+    } else {
+      window.alert("Error deleting "+caseNumber+"."); // alert user of deleted case
+    }
   });
 }
 
@@ -385,7 +395,24 @@ function updateFilters() {
 
 }
 
-// Retrieve data
+// Delete datab
+function deleteJSON(url) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            dataType: "json",
+            type: "DELETE",
+            url: url,
+            success: function(data) {
+                resolve(data);
+            },
+            error: function(status, message) {
+                reject({status: status.status, message: status.statusText});
+            }
+        });
+    });
+}
+
+// Retrieve data with GET
 function getJSON(url) {
     return new Promise((resolve, reject) => {
         $.ajax({
