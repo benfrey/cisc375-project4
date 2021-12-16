@@ -23,18 +23,18 @@ Implement the following to earn 45/60 points (grade: C)
     - ~~Clamp input values if lat/long is outside of St. Paul's bounding box (Grant - done)~~
 - ~~Retrieve data from your St. Paul Crime API (Logan - done)~~
   - ~~By default, include 1,000 most recent crimes in the database (done)~~
-  - Populate a table with one row per crime (use neighborhood_name rather than neighborhood_number, and incident_type rather than code)
+  - Populate a table with one row per crime (use neighborhood_name rather than neighborhood_number, and incident_type rather than code) (Ben can do)
     - ~~Table should be ordered with most recent on top (done)~~
-    - Only show crimes that occurred in neighborhoods visible on the map (Logan)
+    - Only show crimes that occurred in neighborhoods visible on the map (Logan??? where you at man?)
       - HINT: get lat/long coordinates for the NW and SE corners of the map to use as the min/max lat/long coordinates
   - ~~Draw markers on the map for each neighborhood (Grant - done)~~
     - ~~Marker should have popup to show the number of crimes committed in that neighborhood (Grant - done)~~
 - "About the Project" page (Ben)
   - ~~Short bio about each team member (including a photo)~~
   - ~~Description of the tools (frameworks, APIs, etc.) you used to create the application (done)~~
-  - Video demo of the application (2 - 4 minutes) - include voiceover
-  - Can natively embed or upload to YouTube and embed
-  - Six interesting findings that you discovered using your application
+  - Video demo of the application (2 - 4 minutes) - include voiceover (Ben will still do)
+  - Can natively embed or upload to YouTube and embed (Ben will still do)
+  - Six interesting findings that you discovered using your application (Ben will still do)
 
 Implement additional features to earn a B or A (5 pts each)
 
@@ -50,10 +50,10 @@ Implement additional features to earn a B or A (5 pts each)
     - ~~It's OK to have a separate 'Update' button, so users can change many filters before triggering a new request (we have update button - done)~~
 - ~~Style the background color of rows in the table to categorize crimes as "violent crimes" (crimes against another person), "property crimes" (crimes against a person's or business' property), or "other crimes" (anything else) (Logan - done)~~
   - ~~You can categorize as you see fit - here's a link with more info to help though: https://www.justia.com/criminal/offenses/ (Links to an external site.) (done)~~
-  - Also include a legend for the colors
+  - Also include a legend for the colors (Ben can do)
 - ~~Add a marker to the map at exact crime location when selected from the table (Grant - done)~~
-  - Make marker a different color / icon than the markers for the total crimes per neighborhood
-  - Create a popup with date, time, incident, and delete button
+  - Make marker a different color / icon than the markers for the total crimes per neighborhood (Ben will still do)
+  - Create a popup with date, time, incident, and delete button (Ben will still do)
   - ~~Note addresses are slightly obscured (e.g. '98X UNIVERSITY AV W' or 'THOMAS AV & VICTORIA') (done)~~
     - ~~For addresses with an 'X' in the address number, you can replace it with a '0' (e.g. '90X UNIVERSITY AV W' would become '980 UNIVERSITY AV W'). Careful not to replace all X's though - there could be an X in the street name! (done)~~
     
