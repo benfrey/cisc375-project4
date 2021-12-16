@@ -43,15 +43,12 @@
           <h3>Location Search<h3>
             <p>Note: You may enter either a latitude and longitude pair, or alternatively just an address.</p>
             <div class="row">
-                <h4>Latitude</h4>
-                <input id="latitude" type="text" value="" onchange="updateLatitude()" v-model="lat">
-                <h4>longitude</h4>
-                <input id="longitude" type="text" onchange="updateLongitude()" v-model="long">
+                Latitude<input id="latitude" type="text" value="" onchange="updateLatitude()" v-model="lat">
+                Longitude<input id="longitude" type="text" onchange="updateLongitude()" v-model="long">
                 <button type="button" onclick="moveMap()" @click="<!-- Vue function -->">Go</button>
+                <hr>
                 <div class="address">
-                <h2>OR</h2>
-                <h4>Address</h4>
-                <input type="text" id="address">
+                Address<input type="text" id="address">
                 <button type="button" onclick="addressToCoordinates()">Go</button>
             </div>
 
@@ -114,12 +111,8 @@
               <input type="text" id="dateEnd" placeholder="End (YYYY-MM-DD)">
               <br>
               <label>Time Range</label>
-              <input type="text" value="0:00" id="startTime">
-              <input type="text" value="24:00" id="endTime">
-              </br>
-              <label>Time range</label>
-              <input type="text" id="timeStart" placeholder="Start (HH:MM:SS)" v-model="tStart"/>
-              <input type="text" id="timeEnd" placeholder="End (HH:MM:SS)" v-model="tEnd"/>
+              <input type="text" value="00:00:00" id="startTime">
+              <input type="text" value="24:00:00" id="endTime">
           </div>
           </br>
           <div>
@@ -162,10 +155,11 @@
         <th>Case Number</th>
         <th>Date</th>
         <th>Time</th>
-        <th>Code</th>
+        <!--<th>Code</th>-->
         <th>Incident</th>
         <th>Police Grid</th>
-        <th>Neighborhood Number</th>
+        <!--<th>Neighborhood Number</th>-->
+        <th>Neighborhood</th>
         <th>Block</th>
         <th>Select</th>
       </tr>

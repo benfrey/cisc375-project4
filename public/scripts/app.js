@@ -128,9 +128,10 @@ function init() {
 
 }
 
+// Selection of table row address
 function selectTableRow(rowNum){
     row = tableArray[rowNum];
-    //remove av, pa, rd, 
+    //remove av, pa, rd,
     address = row.block + " saint paul minnesota"
     url = "https://nominatim.openstreetmap.org/search?q=" + address + "&format=json&accept-language=en";
     getJSON(url).then(resolve =>{
@@ -144,19 +145,24 @@ function selectTableRow(rowNum){
             var latLng = L.latLng(L.latLng(this.latitude, this.longitude));
             map.flyTo(latLng , 16);
             marker = new L.marker(latLng)
-            .bindPopup("address: "+row.block+ "\nIncident: "+ row.incident)
+            .bindPopup("Date: " + row.date +
+                       "<br/>Time: " + row.time +
+                       "<br/>Address: " + row.block +
+                       "<br/>Incident: " + row.incident +
+                       '<br/><button type="button" onClick="deleteEntry('+ this.case_number + ')" style="color:red">Delete</button>')
             .addTo(map);
             markerArray.push(marker);
             updateValues();
-            
+
         }catch{
             window.alert("this address could not be found with error ");
         }
-        
+
     })
 
 }
 
+// Create table at "codeBody" element
 function createTable(){
     table = document.getElementById('codeBody');
     let i;
@@ -164,6 +170,8 @@ function createTable(){
     for (i = 0; i < tableArray.length; i++){
         var temp = tableArray[i];
         var cType = '<tr style=\'';
+
+        // Color for table style
         if (temp.incident == 'Theft' || temp.incident == 'Auto Theft' || temp.incident == 'Burglary' || temp.incident == 'Vandalism' || temp.incident == 'Graffiti' || temp.incident == 'Robbery'){
             cType += 'background-color:rgb(125, 125, 185)\'>';
         }else if (temp.incident == 'Simple Asasult Dom.' || temp.incident == 'Agg. Assault' || temp.incident == 'Arson' || temp.incident == 'Agg. Assault Dom.' || temp.incident == 'Rape'){
@@ -172,24 +180,25 @@ function createTable(){
             cType += 'background-color:rgb(125, 185, 125)\'>';
         }
 
+        // Assemble each row
         var row = `
                         <td>${temp.case_number}</td>
                         <td>${temp.date}</td>
                         <td>${temp.time}</td>
-                        <td>${temp.code}</td>
                         <td>${temp.incident}</td>
                         <td>${temp.police_grid}</td>
-                        <td>${temp.neighborhood_number}</td>
+                        <td>${temp.neighborhood}</td>
                         <td>${temp.block}</td>
                         <td><button type="button" onClick="selectTableRow(${i})">Select</button></td>
                    </tr>
         `
-        
+
         string += cType+row;
     }
     table.innerHTML = string;
 }
 
+// Pan map
 function moveMap(){
     markerArray.forEach(marker =>{
         map.removeLayer(marker);
@@ -203,29 +212,34 @@ function moveMap(){
     updateValues();
 }
 
+// Update value of latitude
 function updateLatitude() {
     var lat = document.getElementById('latitude').value;
     this.latitude = lat;
     updateValues();
 }
 
+// Update value of longitude
 function updateLongitude() {
     this.longitude = document.getElementById('longitude').value;
     console.log(this.longitude);
     updateValues();
 }
 
+// Update coords based on map center
 function updateCenter() {
     this.longitude = map.getBounds().getCenter().lng;
     this.latitude = map.getBounds().getCenter().lat;
     updateValues();
 }
 
+// Change value attribute in real time
 function updateValues() {
     lat = document.getElementById('latitude').setAttribute('value', this.latitude);
     lng = document.getElementById('longitude').setAttribute('value', this.longitude);
 }
 
+// This needs to be worked on...
 function addressToCoordinates() {
     address = document.getElementById('address').value;
     address += " saint Paul Minnesota";
@@ -240,8 +254,7 @@ function addressToCoordinates() {
     })
 }
 
-
-
+// This needs to be worked on...
 function coordinatesToAddress(lat, long) {
     var url = "https://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+long+"&zoom=18&addressdetails=1";
     // var url = "https://nominatim.openstreetmap.org/format=getjson&reverse?lat="+lat+"&lon="+long;
@@ -250,6 +263,18 @@ function coordinatesToAddress(lat, long) {
     }));
 }
 
+// Delete case
+function deleteEntry() {
+  url = "http://localhost:8000/remove-incident?";
+  url += 10; // needs to be fed a value
+  // Got URL, so resolve by creating master tableArray that has been filtered.
+  getJSON(url).then(resolve =>{
+      x = 1;
+      // Error message or success.
+  });
+}
+
+// Filter button has been pushed, need new SQL query.
 function updateFilters() {
     neighborhoodArray=[];
     incidentArray=[]
@@ -294,7 +319,7 @@ function updateFilters() {
     endTime = document.getElementById('endTime').value;
     console.log('start Time',startTime)
 
-    
+
 
     if(neighborhoodArray.length>0 || incidentArray.length>0){
         if(dateStart&&dateEnd){
@@ -320,15 +345,21 @@ function updateFilters() {
         }
     }
     console.log(url);
+
+    // Got URL, so resolve by creating master tableArray that has been filtered.
     getJSON(url).then(resolve =>{
         this.tableArray = resolve;
         tempArray=[];
         for(var i=0; i<this.tableArray.length; i++){
+
+            // Replace "X" with "0" (zero) so that location may be mapped properly.
             str = tableArray[i].block;
             index = tableArray[i].block.indexOf("X");
             char = str[index];
             replaced = str.replace(char, "0");
             tableArray[i].block = replaced;
+
+            // Filter by time (i.e. remove values from master tableArray that do not fall in time range).
             if(startTime || endTime){
                 if(startTime && !endTime){
                     if(tableArray[i].time > startTime ){
@@ -344,13 +375,17 @@ function updateFilters() {
                     }
                 }
             }
+
         }
+
+        // Make the table
         this.tableArray = tempArray;
         createTable();
     });
 
 }
 
+// Retrieve data
 function getJSON(url) {
     return new Promise((resolve, reject) => {
         $.ajax({
