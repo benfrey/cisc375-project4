@@ -130,6 +130,7 @@ function init() {
         console.log('Error:', error);
     });
 
+    console.log('map bounds',map.getBounds());
     updateFilters();
 
 }
@@ -161,7 +162,7 @@ function selectTableRow(rowNum){
             updateValues();
 
         }catch{
-            window.alert("this address could not be found with error ");
+            window.alert("this address could not be found");
         }
 
     })
@@ -311,6 +312,7 @@ function updateFilters() {
     $("input:checkbox[name=neighborhood]:checked").each(function(){
         neighborhoodArray.push($(this).val());
     });
+    console.log('incident array', incidentArray);
 
     if(neighborhoodArray.length>0){
         if(incidentArray.length=0){
@@ -324,8 +326,15 @@ function updateFilters() {
             for(var i=0; i<neighborhoodArray.length; i++){
                 url += neighborhoodArray[i]+",";
             }
-            url = url.substring(0, url.length-1);
         }
+        url = url.substring(0, url.length-1);
+        // }else{
+        //     url += "&neighborhood="
+        //     for(var i=0; i<neighborhoodArray.length; i++){
+        //         url += neighborhoodArray[i]+",";
+        //     }
+        //     url = url.substring(0, url.length-1);
+        // }
     }
 
     dateStart = document.getElementById('dateStart').value;
