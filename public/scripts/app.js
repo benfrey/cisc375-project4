@@ -29,7 +29,6 @@ let neighborhood_markers =
 function init() {
     let crime_url = 'http://localhost:8000';
 
-
     app = new Vue({
         el: '#app',
         data: {
@@ -70,7 +69,6 @@ function init() {
     map.setMaxBounds([[44.883658, -93.217977], [45.008206, -92.993787]]);
 
       getJSON('http://localhost:8000/incidents?neighborhood=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17').then(result =>{
-          console.log('result', result);
           this.tableArray = result;
             for(var x=0; x<tableArray.length; x++){
                 str = tableArray[x].block;
@@ -104,18 +102,18 @@ function init() {
 
     this.longitude = map.getBounds().getCenter().lng;
     this.latitude = map.getBounds().getCenter().lat;
-    console.log(this.latitude);
-    console.log(this.longitude);
     map.on('moveend', function() {
         updateCenter();
         updateFilters();
     });
     map.on('dragend', function() {
         updateCenter();
+        updateTable();
         updateFilters();
     });
     map.on('zoomend', function(){
         updateCenter();
+        updateTable();
         updateFilters();
     });
 
@@ -130,10 +128,7 @@ function init() {
             district_boundary.addData(value);
         });
     }).catch((error) => {
-        console.log('Error:', error);
     });
-
-    console.log('map bounds',map.getBounds());
     updateFilters();
 
 }
@@ -189,12 +184,13 @@ function createTable(){
         }else{
             cType += 'background-color:rgb(125, 185, 125)\'>';
         }
-
         names = [
             "Conway-Battlecreek-Highwood", "Greater East Side", "West Side", "Dayton's Bluff", "Payne-Phalen","North End",
             "Frogtown","Summit-University","West Seventh","Como","Hamline-Midway","Saint Anthony","Union Park",
             "Macalester-Groveland","Highland","Summit Hill","Downtown"
-                ];
+                ]
+        
+
         // Assemble each row
         var row = `
                         <td>${temp.case_number}</td>
@@ -207,6 +203,7 @@ function createTable(){
                         <td><button type="button" onClick="selectTableRow(${i})">Select</button></td>
                    </tr>
         `
+
         string += cType+row;
     }
     table.innerHTML = string;
@@ -236,7 +233,6 @@ function updateLatitude() {
 // Update value of longitude
 function updateLongitude() {
     this.longitude = document.getElementById('longitude').value;
-    console.log(this.longitude);
     updateValues();
 }
 
@@ -260,10 +256,9 @@ function addressToCoordinates() {
     url = "https://nominatim.openstreetmap.org/search?q=" + address + "&format=json&accept-language=en";
     return this.getJSON(url).then(resolve =>{
         this.fullAddress = resolve[0];
-        console.log(resolve)
         this.latitude = this.fullAddress.lat;
         this.longitude = this.fullAddress.lon;
-        console.log(this.fullAddress);
+        
         updateValues();
         moveMap();
     })
@@ -282,7 +277,7 @@ function coordinatesToAddress(lat, long) {
 function deleteEntry(caseNumber) {
   url = "http://localhost:8000/remove-incident?case_number=";
   url += caseNumber; // needs to be fed a value
-  console.log(url);
+  
 
   // Got URL, now delete
   deleteJSON(url).then(result =>{
@@ -313,6 +308,7 @@ function updateFilters() {
         }
     }
     neighborhoodArray = visibleNeighborhoods;
+
     $("input:checkbox[name=incident]:checked").each(function(){
         incidentArray.push($(this).val());
     });
@@ -324,35 +320,29 @@ function updateFilters() {
             url += incidentArray[i]+"";
         }
         url = url.substring(0, url.length-1);
-        console.log(url);
+        
     }
 
     $("input:checkbox[name=neighborhood]:checked").each(function(){
         neighborhoodArray.push($(this).val());
     });
-    console.log('incident array', incidentArray);
+    
 
     if(neighborhoodArray.length>0){
         if(incidentArray.length=0){
-            url += "?neighborhood="
+            url += "&neighborhood="
         for(var i=0; i<neighborhoodArray.length; i++){
             url += neighborhoodArray[i]+",";
         }
         url = url.substring(0, url.length-1);
         }else{
-            url += "&neighborhood="
+            url += "?neighborhood="
             for(var i=0; i<neighborhoodArray.length; i++){
                 url += neighborhoodArray[i]+",";
             }
         }
         url = url.substring(0, url.length-1);
-        // }else{
-        //     url += "&neighborhood="
-        //     for(var i=0; i<neighborhoodArray.length; i++){
-        //         url += neighborhoodArray[i]+",";
-        //     }
-        //     url = url.substring(0, url.length-1);
-        // }
+        
     }
 
     dateStart = document.getElementById('dateStart').value;
@@ -360,7 +350,7 @@ function updateFilters() {
     maxIncidents = document.getElementById('maxIncidents').value;
     startTime = document.getElementById('startTime').value;
     endTime = document.getElementById('endTime').value;
-    console.log('start Time',startTime)
+   
 
 
 
@@ -387,7 +377,7 @@ function updateFilters() {
             url += "?limit="+maxIncidents;
         }
     }
-    console.log(url);
+ 
 
     // Got URL, so resolve by creating master tableArray that has been filtered.
     getJSON(url).then(resolve =>{
@@ -418,9 +408,7 @@ function updateFilters() {
                     }
                 }
             }
-
         }
-
         // Make the table
         this.tableArray = tempArray;
         createTable();
