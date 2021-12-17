@@ -108,12 +108,10 @@ function init() {
     });
     map.on('dragend', function() {
         updateCenter();
-        updateTable();
         updateFilters();
     });
     map.on('zoomend', function(){
         updateCenter();
-        updateTable();
         updateFilters();
     });
 
@@ -198,7 +196,7 @@ function createTable(){
                         <td>${temp.time}</td>
                         <td>${temp.incident}</td>
                         <td>${temp.police_grid}</td>
-                        <td>${names[temp.neighborhood_number]}</td>
+                        <td>${names[temp.neighborhood_number-1]}</td>
                         <td>${temp.block}</td>
                         <td><button type="button" onClick="selectTableRow(${i})">Select</button></td>
                    </tr>
@@ -307,6 +305,7 @@ function updateFilters() {
             visibleNeighborhoods.push(neighborhood_markers[i].number);
         }
     }
+    console.log('visibleNeighborhoods', visibleNeighborhoods);
     neighborhoodArray = visibleNeighborhoods;
 
     $("input:checkbox[name=incident]:checked").each(function(){
