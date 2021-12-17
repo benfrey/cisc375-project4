@@ -315,13 +315,14 @@ function updateFilters() {
     console.log('incident array', incidentArray);
 
     if(neighborhoodArray.length>0){
-        if(incidentArray.length > 0){
-            url+= "&neighborhood="
-            for(var i=0; i<neighborhoodArray.length; i++){
-                url += neighborhoodArray[i]+",";
-            }
-        }else {
-            url+= "?neighborhood="
+        if(incidentArray.length=0){
+            url += "?neighborhood="
+        for(var i=0; i<neighborhoodArray.length; i++){
+            url += neighborhoodArray[i]+",";
+        }
+        url = url.substring(0, url.length-1);
+        }else{
+            url += "&neighborhood="
             for(var i=0; i<neighborhoodArray.length; i++){
                 url += neighborhoodArray[i]+",";
             }
