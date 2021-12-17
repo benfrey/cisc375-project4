@@ -58,7 +58,17 @@ app.get('/codes', (req, res) => {
         });
     })
     .then(rows => {
-      res.status(200).type('application/json').send(rows);
+      // Replace incident_type with "type"
+      let rowsMod = rows.map(
+          obj => {
+              return {
+                  "code" : obj.code,
+                  "type" : obj.incident_type,
+              }
+          }
+      );
+
+      res.status(200).type('application/json').send(rowsMod);
     }).catch(err => {
       res.status(500).send("Error querying database");
     });
@@ -94,7 +104,18 @@ app.get('/neighborhoods', (req, res) => {
       });
   })
   .then(rows => {
-    res.status(200).type('application/json').send(rows);
+    // This is where we should have replaced neighborhood_number with id in each row.!!
+    let rowsMod = rows.map(
+        obj => {
+            return {
+                "id" : obj.neighborhood_number,
+                "name" : obj.neighborhood_name,
+            }
+        }
+    );
+    //console.log(rowsMod);
+
+    res.status(200).type('application/json').send(rowsMod);
   }).catch(err => {
     res.status(500).send("Error querying database");
   });
@@ -226,6 +247,7 @@ app.put('/new-incident', (req, res) =>{
 
 // Delete /remove-incident
 app.delete('/remove-incident', (req, res) =>{
+  // Make the database query
   db.get('SELECT * FROM Incidents WHERE case_number = ?', [req.query.case_number], (err, row)=> {
       if(err || row === undefined ) {
           res.status(500).type('txt').send('Error, incident does not exist');
@@ -240,27 +262,8 @@ app.delete('/remove-incident', (req, res) =>{
           });
       }
   });
+
 });
-// app.delete('/remove-incident', (req, res) =>{
-//   console.log(req.body);
-//   db.get('SELECT * FROM Incidents WHERE case_number = ?', [req.body.case_number], (err, row)=> {
-//       if(err || row !== undefined ) {
-//           res.status(500).type('txt').send('Error, incident does not exist');
-//       } else {
-//           db.run('DELETE FROM Incidents WHERE case_number = ?',[req.body.case_number], (err) =>{
-//             if(err){
-//               console.log(err);
-//               res.status(500).type('txt').send('internal server error, could not be deleted');
-//             }else{
-//               res.status(200).type('txt').send('deleted');
-//             }
-//           });
-//       }
-//   });
-// });
-
-
-
 
 app.listen(port, () => {
     console.log('Now listening on port ' + port);

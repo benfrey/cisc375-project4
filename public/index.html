@@ -43,15 +43,12 @@
           <h3>Location Search<h3>
             <p>Note: You may enter either a latitude and longitude pair, or alternatively just an address.</p>
             <div class="row">
-                <h4>Latitude</h4>
-                <input id="latitude" type="text" value="" onchange="updateLatitude()" v-model="lat">
-                <h4>longitude</h4>
-                <input id="longitude" type="text" onchange="updateLongitude()" v-model="long">
+                Latitude<input id="latitude" type="text" value="" onchange="updateLatitude()" v-model="lat">
+                Longitude<input id="longitude" type="text" onchange="updateLongitude()" v-model="long">
                 <button type="button" onclick="moveMap()" @click="<!-- Vue function -->">Go</button>
+                <hr>
                 <div class="address">
-                <h2>OR</h2>
-                <h4>Address</h4>
-                <input type="text" id="address">
+                Address<input type="text" id="address">
                 <button type="button" onclick="addressToCoordinates()">Go</button>
             </div>
 
@@ -67,18 +64,18 @@
       <div class="control">
           <h3>Filters</h3>
           <div>
-              <h5>Incident code</h5>
-              <input type="checkbox" name="incident" value="300,311,312,313,314,321,322,323,324,331,333,334,341,342,343,344,351,352,353,354,361,363,364,371,372,373,374,"><span style="color:rgb(125, 125, 185)">Robbery</span><br>
-              <input type="checkbox" name="incident" value="400,410,411,412,420,421,422,430,431,432,440,441,442,450,451,452,453,"><span style="color:rgb(185, 125, 125)">Aggrevated Assault</span><br>
-              <input type="checkbox" name="incident" value="500,510,511,513,515,516,520,521,523,525,526,530,531,533535,536,540,541,543,545,546,550,551,553,555,556,560,561,563,565,566,"><span style="color:rgb(125, 125, 185)">Burglary/Attempted Burglary</span><br>
-              <input type="checkbox" name="incident" value="600,603,611,612,613,614,621,622,623, 630,631,632,633,640,641,642,643,651,652,653,661,662,663,671,672,673,681,682, 683,691,692,693,700,710,711,712,720,721,722,"><span style="color:rgb(125, 125, 185)">Theft/Attempted Theft</span><br>
-              <input type="checkbox" name="incident" value="810,861,862,863,"><span style="color:rgb(185, 125, 125)">Domestic Assalt</span><br>
-              <input type="checkbox" name="incident" value="900,901,903,905,911,913,915,921,922,923,925,931,933,941,942,951,961,971,972,975,981,982,"><span style="color:rgb(185, 125, 125)">Arson</span><br>
-              <input type="checkbox" name="incident" value="1400,1401,1410,1415,1416,1420,1425,1426,1430,1435,1436,"><span style="color:rgb(125, 125, 185)">Damage to property/ Grafitti</span><br>
-              <input type="checkbox" name="incident" value="1800,1810,1811,1812,1813,1814,1815,1820,1822,1823,1824,1825,1830,1835,1840,1841,1842,1843,1844,1845,1850,1855,1860,1865,1870,1880,1885,"><span style="color:rgb(125, 185, 125)">Narcotics</span><br>
-              <input type="checkbox" name="incident" value="2619,"><span style="color:rgb(125, 185, 125)">Firearm Discharge</span><br>
-              <input type="checkbox" name="incident" value="3100,"><span style="color:rgb(125, 185, 125)">Death Investigation</span><br>
-              <input type="checkbox" name="incident" value="9954,9959,9986,"><span style="color:rgb(125, 185, 125)">Dproactive/community engagement</span><br>
+              <h5>Incident code <b>(represents color legend for row colors)</b></h5>
+              <input type="checkbox" name="incident" value="300,311,312,313,314,321,322,323,324,331,333,334,341,342,343,344,351,352,353,354,361,363,364,371,372,373,374,"><span style="color:rgb(125, 125, 185)">Robbery [300-399]</span><br>
+              <input type="checkbox" name="incident" value="400,410,411,412,420,421,422,430,431,432,440,441,442,450,451,452,453,"><span style="color:rgb(185, 125, 125)">Aggrevated Assault [400-499]</span><br>
+              <input type="checkbox" name="incident" value="500,510,511,513,515,516,520,521,523,525,526,530,531,533535,536,540,541,543,545,546,550,551,553,555,556,560,561,563,565,566,"><span style="color:rgb(125, 125, 185)">Burglary/Attempted Burglary [500-599]</span><br>
+              <input type="checkbox" name="incident" value="600,603,611,612,613,614,621,622,623, 630,631,632,633,640,641,642,643,651,652,653,661,662,663,671,672,673,681,682, 683,691,692,693,700,710,711,712,720,721,722,"><span style="color:rgb(125, 125, 185)">Theft/Attempted Theft [600-799]</span><br>
+              <input type="checkbox" name="incident" value="810,861,862,863,"><span style="color:rgb(185, 125, 125)">Domestic Assalt [800-899]</span><br>
+              <input type="checkbox" name="incident" value="900,901,903,905,911,913,915,921,922,923,925,931,933,941,942,951,961,971,972,975,981,982,"><span style="color:rgb(185, 125, 125)">Arson [900-999]</span><br>
+              <input type="checkbox" name="incident" value="1400,1401,1410,1415,1416,1420,1425,1426,1430,1435,1436,"><span style="color:rgb(125, 125, 185)">Damage to property/ Grafitti [1000-1499]</span><br>
+              <input type="checkbox" name="incident" value="1800,1810,1811,1812,1813,1814,1815,1820,1822,1823,1824,1825,1830,1835,1840,1841,1842,1843,1844,1845,1850,1855,1860,1865,1870,1880,1885,"><span style="color:rgb(125, 185, 125)">Narcotics [1800-1999]</span><br>
+              <input type="checkbox" name="incident" value="2619,"><span style="color:rgb(125, 185, 125)">Firearm Discharge [2000-2999]</span><br>
+              <input type="checkbox" name="incident" value="3100,"><span style="color:rgb(125, 185, 125)">Death Investigation [3000-3999]</span><br>
+              <input type="checkbox" name="incident" value="9954,9959,9986,"><span style="color:rgb(125, 185, 125)">Dproactive/community engagement [9000-9999]</span><br>
             </div>
           </br>
           <div>
@@ -114,12 +111,8 @@
               <input type="text" id="dateEnd" placeholder="End (YYYY-MM-DD)">
               <br>
               <label>Time Range</label>
-              <input type="text" value="0:00" id="startTime">
-              <input type="text" value="24:00" id="endTime">
-              </br>
-              <label>Time range</label>
-              <input type="text" id="timeStart" placeholder="Start (HH:MM:SS)" v-model="tStart"/>
-              <input type="text" id="timeEnd" placeholder="End (HH:MM:SS)" v-model="tEnd"/>
+              <input type="text" value="00:00:00" id="startTime">
+              <input type="text" value="24:00:00" id="endTime">
           </div>
           </br>
           <div>
@@ -130,6 +123,9 @@
 
           <!-- Upadate map filter options -->
           <button type="button" onclick="updateFilters()">Filter Incidents</button>
+
+          <!-- Reset application = needs to reset filter, table, and map -->
+          <button type="button" onclick="resetButton()" style="color:red; border: 2px solid red;">Reset</button>
       </div>
 
     </div>
@@ -162,10 +158,11 @@
         <th>Case Number</th>
         <th>Date</th>
         <th>Time</th>
-        <th>Code</th>
+        <!--<th>Code</th>-->
         <th>Incident</th>
         <th>Police Grid</th>
-        <th>Neighborhood Number</th>
+        <!--<th>Neighborhood Number</th>-->
+        <th>Neighborhood</th>
         <th>Block</th>
         <th>Select</th>
       </tr>
