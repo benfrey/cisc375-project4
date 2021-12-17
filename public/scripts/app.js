@@ -108,12 +108,15 @@ function init() {
     console.log(this.longitude);
     map.on('moveend', function() {
         updateCenter();
+        updateFilters();
     });
     map.on('dragend', function() {
         updateCenter();
+        updateFilters();
     });
     map.on('zoomend', function(){
         updateCenter();
+        updateFilters();
     });
 
 
@@ -187,6 +190,11 @@ function createTable(){
             cType += 'background-color:rgb(125, 185, 125)\'>';
         }
 
+        names = [
+            "Conway-Battlecreek-Highwood", "Greater East Side", "West Side", "Dayton's Bluff", "Payne-Phalen","North End",
+            "Frogtown","Summit-University","West Seventh","Como","Hamline-Midway","Saint Anthony","Union Park",
+            "Macalester-Groveland","Highland","Summit Hill","Downtown"
+                ];
         // Assemble each row
         var row = `
                         <td>${temp.case_number}</td>
@@ -194,12 +202,11 @@ function createTable(){
                         <td>${temp.time}</td>
                         <td>${temp.incident}</td>
                         <td>${temp.police_grid}</td>
-                        <td>${temp.neighborhood_number}</td>
+                        <td>${names[temp.neighborhood_number]}</td>
                         <td>${temp.block}</td>
                         <td><button type="button" onClick="selectTableRow(${i})">Select</button></td>
                    </tr>
         `
-
         string += cType+row;
     }
     table.innerHTML = string;
@@ -294,7 +301,18 @@ function deleteEntry(caseNumber) {
 // Filter button has been pushed, need new SQL query.
 function updateFilters() {
     neighborhoodArray=[];
-    incidentArray=[]
+    incidentArray=[];
+    //get visible neighborhoods on the map and add them to neighborhoodArray
+    mapBounds = map.getBounds();
+    visibleNeighborhoods =[]
+    for(var i=0; i<neighborhood_markers.length; i++){
+        latitude = neighborhood_markers[i].location[0];
+        longitude = neighborhood_markers[i].location[1];
+        if(latitude<mapBounds._northEast.lat && latitude>mapBounds._southWest.lat && longitude<mapBounds._northEast.lng && longitude > mapBounds._southWest.lng){
+            visibleNeighborhoods.push(neighborhood_markers[i].number);
+        }
+    }
+    neighborhoodArray = visibleNeighborhoods;
     $("input:checkbox[name=incident]:checked").each(function(){
         incidentArray.push($(this).val());
     });
