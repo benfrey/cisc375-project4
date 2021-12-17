@@ -306,8 +306,10 @@ function updateFilters() {
         }
     }
     console.log('visibleNeighborhoods', visibleNeighborhoods);
-    neighborhoodArray = visibleNeighborhoods;
-
+    if(visibleNeighborhoods.length != 17){
+        neighborhoodArray = visibleNeighborhoods;
+    }
+    
     $("input:checkbox[name=incident]:checked").each(function(){
         incidentArray.push($(this).val());
     });
