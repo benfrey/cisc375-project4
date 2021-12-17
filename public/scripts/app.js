@@ -245,6 +245,12 @@ function updateCenter() {
 function updateValues() {
     lat = document.getElementById('latitude').setAttribute('value', this.latitude);
     lng = document.getElementById('longitude').setAttribute('value', this.longitude);
+    var url = "https://nominatim.openstreetmap.org/reverse?format=json&lat="+this.latitude+"&lon="+this.longitude+"&zoom=18&addressdetails=1";
+    return Promise.resolve(this.getJSON(url).then(resolve =>{
+        this.fullAddress = resolve;
+        console.log(this.fullAddress);
+            addr = document.getElementById('address').setAttribute('value', this.fullAddress.address.house_number +" "+this.fullAddress.address.road);
+    }));
 }
 
 // This needs to be worked on...
