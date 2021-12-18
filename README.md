@@ -19,22 +19,22 @@ Implement the following to earn 45/60 points (grade: C)
   - ~~Map should update when location is entered and 'Go' button pressed (Grant - done)~~
   - ~~Input box text should update with new location (lat/long coordinates or address) when map is panned/zoomed (grant - done)~~
     - ~~NOTE: updating once pan/zoom has ended is recommended - constantly updating this during a pan will overwhelm the system (done)~~
-    - Use the Nominatim API (https://nominatim.org/release-docs/develop/api/Overview/ (Links to an external site.) (Links to an external site.)) to convert between address and lat/long (Grant)
+    - ~~Use the Nominatim API (https://nominatim.org/release-docs/develop/api/Overview/ (Links to an external site.) (Links to an external site.)) to convert between address and lat/long (Grant)~~
     - ~~Clamp input values if lat/long is outside of St. Paul's bounding box (Grant - done)~~
 - ~~Retrieve data from your St. Paul Crime API (Logan - done)~~
   - ~~By default, include 1,000 most recent crimes in the database (done)~~
-  - Populate a table with one row per crime (use neighborhood_name rather than neighborhood_number, and incident_type rather than code) (Ben can do)
+  - ~~Populate a table with one row per crime (use neighborhood_name rather than neighborhood_number, and incident_type rather than code) (Ben can do)~~
     - ~~Table should be ordered with most recent on top (done)~~
-    - Only show crimes that occurred in neighborhoods visible on the map (Logan??? where you at man?)
-      - HINT: get lat/long coordinates for the NW and SE corners of the map to use as the min/max lat/long coordinates
+    - ~~Only show crimes that occurred in neighborhoods visible on the map (Logan??? where you at man?)~~
+      - ~~HINT: get lat/long coordinates for the NW and SE corners of the map to use as the min/max lat/long coordinates~~
   - ~~Draw markers on the map for each neighborhood (Grant - done)~~
     - ~~Marker should have popup to show the number of crimes committed in that neighborhood (Grant - done)~~
 - "About the Project" page (Ben)
   - ~~Short bio about each team member (including a photo)~~
   - ~~Description of the tools (frameworks, APIs, etc.) you used to create the application (done)~~
-  - Video demo of the application (2 - 4 minutes) - include voiceover (Ben will still do)
-  - Can natively embed or upload to YouTube and embed (Ben will still do)
-  - Six interesting findings that you discovered using your application (Ben will still do)
+  - ~~Video demo of the application (2 - 4 minutes) - include voiceover (Ben will still do)~~
+  - ~~Can natively embed or upload to YouTube and embed (Ben will still do)~~
+  - ~~Six interesting findings that you discovered using your application (Ben will still do)~~
 
 ~~Implement additional features to earn a B or A (5 pts each) (all done)~~
 
