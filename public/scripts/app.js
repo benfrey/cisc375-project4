@@ -158,7 +158,7 @@ function selectTableRow(rowNum){
             updateValues();
 
         }catch{
-            window.alert("this address could not be found");
+            window.alert("this address could not be found, may be missing cardinal direction.");
         }
 
     })
@@ -187,7 +187,7 @@ function createTable(){
             "Frogtown","Summit-University","West Seventh","Como","Hamline-Midway","Saint Anthony","Union Park",
             "Macalester-Groveland","Highland","Summit Hill","Downtown"
                 ]
-        
+
 
         // Assemble each row
         var row = `
@@ -256,15 +256,19 @@ function updateValues() {
 // This needs to be worked on...
 function addressToCoordinates() {
     address = document.getElementById('address').value;
-    address += " saint Paul Minnesota";
+    address += " Saint Paul, 55105";
     url = "https://nominatim.openstreetmap.org/search?q=" + address + "&format=json&accept-language=en";
     return this.getJSON(url).then(resolve =>{
         this.fullAddress = resolve[0];
-        this.latitude = this.fullAddress.lat;
-        this.longitude = this.fullAddress.lon;
-        
-        updateValues();
-        moveMap();
+        if(this.fullAddress == undefined) {
+          window.alert("Could not find address"); // alert user of deleted case
+        } else {
+          this.latitude = this.fullAddress.lat;
+          this.longitude = this.fullAddress.lon;
+
+          updateValues();
+          moveMap();
+        }
     })
 }
 
@@ -281,7 +285,7 @@ function coordinatesToAddress(lat, long) {
 function deleteEntry(caseNumber) {
   url = "http://localhost:8000/remove-incident?case_number=";
   url += caseNumber; // needs to be fed a value
-  
+
 
   // Got URL, now delete
   deleteJSON(url).then(result =>{
@@ -315,7 +319,7 @@ function updateFilters() {
     if(visibleNeighborhoods.length != 17){
         neighborhoodArray = visibleNeighborhoods;
     }
-    
+
     $("input:checkbox[name=incident]:checked").each(function(){
         incidentArray.push($(this).val());
     });
@@ -327,13 +331,13 @@ function updateFilters() {
             url += incidentArray[i]+"";
         }
         url = url.substring(0, url.length-1);
-        
+
     }
 
     $("input:checkbox[name=neighborhood]:checked").each(function(){
         neighborhoodArray.push($(this).val());
     });
-    
+
 
     if(neighborhoodArray.length>0){
         if(incidentArray.length=0){
@@ -349,7 +353,7 @@ function updateFilters() {
             }
         }
         url = url.substring(0, url.length-1);
-        
+
     }
 
     dateStart = document.getElementById('dateStart').value;
@@ -357,7 +361,7 @@ function updateFilters() {
     maxIncidents = document.getElementById('maxIncidents').value;
     startTime = document.getElementById('startTime').value;
     endTime = document.getElementById('endTime').value;
-   
+
 
 
 
@@ -384,7 +388,7 @@ function updateFilters() {
             url += "?limit="+maxIncidents;
         }
     }
- 
+
 
     // Got URL, so resolve by creating master tableArray that has been filtered.
     getJSON(url).then(resolve =>{
