@@ -137,7 +137,7 @@ app.get('/incidents', (req, res) => {
 
   if(req.query.neighborhood){
     nieghborhoodArray = req.query.neighborhood.split(",");
-    sqlQuery += " WHERE neighborhood_number = " + nieghborhoodArray.join(" OR neighborhood_number = ");
+    sqlQuery += " WHERE neighborhood_number in (" + nieghborhoodArray.join(",")+")";
   }
 
   if(req.query.grid){
@@ -152,9 +152,9 @@ app.get('/incidents', (req, res) => {
   if(req.query.code){
     codeArray = req.query.code.split(",");
     if(req.query.grid || req.query.neighborhood){
-      sqlQuery += " AND code = " + codeArray.join(" OR code = ");
+      sqlQuery += " AND code in (" + codeArray.join(",")+")";
     }else{
-      sqlQuery += " WHERE code = " + codeArray.join(" OR code = ");
+      sqlQuery += " WHERE code in (" + codeArray.join(",")+")";
     }
   }
 
