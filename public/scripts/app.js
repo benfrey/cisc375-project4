@@ -315,7 +315,6 @@ function updateFilters() {
             visibleNeighborhoods.push(neighborhood_markers[i].number);
         }
     }
-    console.log('visibleNeighborhoods', visibleNeighborhoods);
     if(visibleNeighborhoods.length != 17){
         neighborhoodArray = visibleNeighborhoods;
     }
@@ -324,6 +323,7 @@ function updateFilters() {
         incidentArray.push($(this).val());
     });
     url = "http://localhost:8000/incidents";
+
 
     if(incidentArray.length>0){
         url += "?code="
@@ -338,22 +338,20 @@ function updateFilters() {
         neighborhoodArray.push($(this).val());
     });
 
-
-    if(neighborhoodArray.length>0){
-        if(incidentArray.length=0){
-            url += "&neighborhood="
-        for(var i=0; i<neighborhoodArray.length; i++){
-            url += neighborhoodArray[i]+",";
-        }
-        url = url.substring(0, url.length-1);
-        }else{
-            url += "?neighborhood="
-            for(var i=0; i<neighborhoodArray.length; i++){
+    if(neighborhoodArray.length>0){ //neighborhood was checked
+        if(incidentArray.length>0){ //if there was incidents selected as well
+            url += "&neighborhood=";
+            for(var i=0; i<neighborhoodArray.length; i++){  //add neighborhoods
                 url += neighborhoodArray[i]+",";
             }
+            url = url.substring(0, url.length-1);
+        }else{//there are no incidents selected
+            url+= "?neighborhood=";
+            for(var i=0; i<neighborhoodArray.length; i++){  //add neighborhoods
+                url += neighborhoodArray[i]+",";
+            }
+            url = url.substring(0, url.length-1);//there was no incidents selected
         }
-        url = url.substring(0, url.length-1);
-
     }
 
     dateStart = document.getElementById('dateStart').value;
